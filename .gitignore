@@ -1,0 +1,15 @@
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+.idea/
+.vscode/
+
+# Node (no dependencies today, but keep it out if any are added)
+node_modules/
+npm-debug.log*
+
+# The generated .html files at the repo root ARE committed on purpose —
+# they are the deployable artifact, and most static hosts serve them
+# straight from the repository root. Regenerate with: node build/build.js

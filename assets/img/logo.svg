@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 286 56" width="286" height="56" role="img" aria-label="Amazo Publishers">
+  <!-- Open book with a lifting page — original mark, no borrowed trade dress. -->
+  <g transform="translate(4 10)">
+    <!-- left page -->
+    <path d="M2 4.5A2.5 2.5 0 0 1 4.5 2H19v32H4.5A2.5 2.5 0 0 1 2 31.5v-27Z" fill="#14140F" opacity=".10"/>
+    <path d="M2 4.5A2.5 2.5 0 0 1 4.5 2H19v32H4.5A2.5 2.5 0 0 1 2 31.5v-27Z" fill="none" stroke="#14140F" stroke-width="2.2" stroke-linejoin="round"/>
+    <!-- right page -->
+    <path d="M38 4.5A2.5 2.5 0 0 0 35.5 2H21v32h14.5a2.5 2.5 0 0 0 2.5-2.5v-27Z" fill="none" stroke="#F2830A" stroke-width="2.2" stroke-linejoin="round"/>
+    <!-- ruled lines on the right page -->
+    <path d="M25.5 10.5h8M25.5 16h8M25.5 21.5h5" stroke="#F2830A" stroke-width="2.2" stroke-linecap="round" opacity=".65"/>
+    <!-- spine -->
+    <path d="M20 2v32" stroke="#14140F" stroke-width="2.2" stroke-linecap="round"/>
+  </g>
+  <text x="52" y="37" font-family="Georgia, 'Iowan Old Style', 'Times New Roman', serif" font-size="27" font-weight="700" letter-spacing="-.2" fill="#14140F">Amazo<tspan font-style="italic" font-weight="400" fill="#F2830A"> Publishers</tspan></text>
+</svg>
