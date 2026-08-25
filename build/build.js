@@ -516,25 +516,28 @@ const marquee = (items, label) => {
     </div>`;
 };
 
-/* Selling-point tiles on a continuous track, same two-run trick as marquee().
-   Each tile splits its title so the first word can take the accent colour. */
-const uspMarquee = (items) => {
-  const tile = ([ic, title, text], i) => {
-    const words = title.split(' ');
-    const lead = words.shift();
-    return `<li class="usp">
-          <svg class="usp__motif" viewBox="0 0 156 72" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2">${uspMotif(i)}</svg>
-          <h3 class="usp__title"><span>${lead}</span>${words.length ? '<br>' + words.join(' ') : ''}</h3>
-          <p class="usp__text">${text}</p>
-          <span class="usp__icon">${icon(ic)}</span>
+/* Testimonial tiles on a continuous track, same two-run trick as marquee().
+   The drawn avatar sits in the corner the selling-point tiles used for their
+   icon, so the two share a shape even though only this one is still used. */
+const quoteMarquee = (items) => {
+  const tile = ([text, name, role], i) => `<li class="qtile">
+          <svg class="qtile__motif" viewBox="0 0 156 72" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2">${uspMotif(i)}</svg>
+          <div class="qtile__stars">${solidStar.repeat(5)}</div>
+          <blockquote class="qtile__text">&ldquo;${text}&rdquo;</blockquote>
+          <figcaption class="qtile__who">
+            <span class="qtile__avatar">${avatarArt(name, i)}</span>
+            <span>
+              <span class="qtile__name">${name}</span><br>
+              <span class="qtile__role">${role}</span>
+            </span>
+          </figcaption>
         </li>`;
-  };
   const run = (hidden) =>
-    `<ul class="usp-run"${hidden ? ' aria-hidden="true"' : ''}>
+    `<ul class="qtile-run"${hidden ? ' aria-hidden="true"' : ''}>
         ${items.map(tile).join('\n        ')}
       </ul>`;
   return `
-    <div class="marquee usp-marquee" role="group" aria-label="Why authors choose us">
+    <div class="marquee qtile-marquee" role="group" aria-label="What our authors say">
       <div class="marquee__track">
         ${run(false)}
         ${run(true)}
@@ -600,20 +603,6 @@ const homePage = () => {
           <span class="book__author">${author}</span>
         </div>`;
   }).join('');
-
-  // One row of three on the homepage; the rest stay in site.data for reuse.
-  const quotes = home.testimonials.slice(0, 3).map(([text, name, role], i) => `
-        <figure class="quote reveal">
-          <div class="quote__stars">${solidStar.repeat(5)}</div>
-          <blockquote class="quote__text">“${text}”</blockquote>
-          <figcaption class="quote__who">
-            <span class="quote__avatar">${avatarArt(name, i)}</span>
-            <span>
-              <span class="quote__name">${name}</span><br>
-              <span class="quote__role">${role}</span>
-            </span>
-          </figcaption>
-        </figure>`).join('');
 
   const faqs = home.faq.map(([q, a]) => `
       <div class="faq__item">
@@ -763,25 +752,14 @@ ${ctaBand('Are you ready to become a <em>published</em> author?', 'Amazo Publish
   </div>
 </section>
 
-<section class="section section--tight section--ink usp-section">
-  <div class="shell">
-    <div class="section-head section-head--center">
-      <span class="kicker">${home.why.kicker}</span>
-      <h2 class="h2" style="color:var(--paper)">${home.why.title}</h2>
-    </div>
-  </div>
-  ${uspMarquee(home.why.items)}
-</section>
-
-<section class="section section--warm">
+<section class="section section--tight section--ink qtile-section">
   <div class="shell">
     <div class="section-head section-head--center">
       <span class="kicker">Testimonials</span>
-      <h2 class="h2">What our <em>authors</em> say</h2>
-    </div>
-    <div class="quotes">${quotes}
+      <h2 class="h2" style="color:var(--paper)">What our <em>authors</em> say</h2>
     </div>
   </div>
+  ${quoteMarquee(home.testimonials)}
 </section>
 
 <section class="section">

@@ -49,39 +49,7 @@ const footer = () => {
     site.address ? `<li>${icon('pin')}<span>${site.address}</span></li>` : ''
   ].filter(Boolean).join('\n          ');
 
-  /* Contact strip above the footer columns. Phone and address are still
-     placeholders in site.data, so each row only renders once it has a value. */
-  const stripRows = [
-    `<div class="fstrip__item">
-        <span class="fstrip__icon">${icon('mail')}</span>
-        <div><span class="fstrip__label">Email</span>
-        <a href="mailto:${site.email}">${site.email}</a></div>
-      </div>`,
-    site.phone
-      ? `<div class="fstrip__item">
-        <span class="fstrip__icon">${icon('phone')}</span>
-        <div><span class="fstrip__label">Call us</span>
-        <a href="tel:${telHref()}">${site.phone}</a></div>
-      </div>`
-      : '',
-    site.address
-      ? `<div class="fstrip__item">
-        <span class="fstrip__icon">${icon('pin')}</span>
-        <div><span class="fstrip__label">Visit us</span>
-        <span>${site.address}</span></div>
-      </div>`
-      : ''
-  ].filter(Boolean).join('\n      ');
-
   return `
-<section class="footer-strip">
-  <div class="shell">
-    <div class="fstrip" data-cols="${stripRows.split('fstrip__item').length - 1}">
-      ${stripRows}
-    </div>
-  </div>
-</section>
-
 <footer class="site-footer">
   <div class="shell">
     <div class="footer-grid">
