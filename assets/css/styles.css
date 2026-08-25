@@ -1009,89 +1009,6 @@ img.book__art{ object-fit: cover; }
   .cta-band__art{ display: none; }
 }
 
-/* ---------- Packages ---------- */
-.tiers{
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: clamp(18px, 2.4vw, 28px);
-  align-items: stretch;
-}
-.tier{
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  padding: clamp(28px, 3vw, 38px);
-  background: var(--paper);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
-  transition: transform .35s var(--ease), box-shadow .35s var(--ease), border-color .35s var(--ease);
-}
-.tier:hover{ transform: translateY(-5px); box-shadow: var(--shadow-lg); border-color: var(--orange-line); }
-/* The middle tier is lifted so the eye lands on it first */
-.tier--featured{
-  border-color: var(--orange-line);
-  box-shadow: var(--shadow-lg);
-}
-.tier--featured::before{
-  content: "";
-  position: absolute;
-  inset: 0 0 auto 0;
-  height: 3px;
-  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-  background: linear-gradient(90deg, var(--orange), var(--orange-deep));
-}
-.tier__flag{
-  position: absolute;
-  top: -12px; left: 50%;
-  translate: -50% 0;
-  padding: 5px 15px;
-  border-radius: 999px;
-  background: var(--orange);
-  color: #fff;
-  font-size: 10.5px;
-  font-weight: 600;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  white-space: nowrap;
-  box-shadow: var(--shadow-md);
-}
-.tier__icon{
-  width: 48px; height: 48px;
-  display: grid; place-items: center;
-  border-radius: 12px;
-  background: var(--orange-tint);
-  color: var(--orange-deep);
-  margin-bottom: 18px;
-}
-.tier__icon svg{ width: 23px; height: 23px; }
-.tier__name{ font-size: clamp(22px, 2.4vw, 27px); margin-bottom: 8px; }
-.tier__for{
-  font-size: 14.5px;
-  color: var(--paper-dim);
-  margin-bottom: 22px;
-  padding-bottom: 22px;
-  border-bottom: 1px solid var(--line);
-}
-.tier__list{ list-style: none; margin: 0 0 28px; padding: 0; display: grid; gap: 11px; }
-.tier__list li{
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  font-size: 14.5px;
-  line-height: 1.55;
-  color: var(--ink-soft);
-}
-.tier__list svg{ width: 16px; height: 16px; flex-shrink: 0; margin-top: 3px; color: var(--orange); }
-.tier__cta{ margin-top: auto; width: 100%; }
-.tiers__note{
-  text-align: center;
-  font-size: 13.5px;
-  color: var(--paper-dim);
-  margin: clamp(26px, 3vw, 36px) auto 0;
-  max-width: 56ch;
-}
-
 /* ---------- Genres ---------- */
 .genres{
   display: grid;
@@ -2083,8 +2000,6 @@ img.book__art{ object-fit: cover; }
   .approach{ grid-template-columns: 1fr; }
   .approach__col:nth-child(2){ margin-top: 0; }
   .circles{ grid-template-columns: repeat(2, 1fr); }
-  /* Featured tier stops being the middle one, so drop the visual lift */
-  .tiers{ grid-template-columns: 1fr; max-width: 540px; margin-inline: auto; }
   .genres{ grid-template-columns: repeat(2, 1fr); }
   .stats-band .shell{ grid-template-columns: 1fr; }
   .fstrip{ grid-template-columns: 1fr; }

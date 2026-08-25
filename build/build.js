@@ -573,18 +573,6 @@ const homePage = () => {
   const stepsA = allSteps.slice(0, half).join('');
   const stepsB = allSteps.slice(half).join('');
 
-  const tiers = home.packages.tiers.map((t) => `
-        <article class="tier${t.featured ? ' tier--featured' : ''} reveal">
-          ${t.featured ? '<span class="tier__flag">Most chosen</span>' : ''}
-          <span class="tier__icon">${icon(t.icon)}</span>
-          <h3 class="tier__name">${t.name}</h3>
-          <p class="tier__for">${t.for}</p>
-          <ul class="tier__list">
-            ${t.includes.map((x) => `<li>${icon('check')}<span>${x}</span></li>`).join('\n            ')}
-          </ul>
-          <a class="btn ${t.featured ? 'btn--solid' : ''} tier__cta" href="contact.html?service=${encodeURIComponent(t.name)}">Request a quote ${icon('arrow')}</a>
-        </article>`).join('');
-
   const genreCards = home.genreDetail.items.map(([ic, t, d]) => `
         <div class="genre reveal">
           <span class="genre__icon">${icon(ic)}</span>
@@ -701,19 +689,6 @@ const homePage = () => {
     </div>
     <div class="grid grid--4">${gridServices.map(serviceCard).join('')}
     </div>
-  </div>
-</section>
-
-<section class="section section--warm" id="packages">
-  <div class="shell">
-    <div class="section-head section-head--center">
-      <span class="kicker">${home.packages.kicker}</span>
-      <h2 class="h2">${home.packages.title}</h2>
-      <p class="lede">${home.packages.lede}</p>
-    </div>
-    <div class="tiers">${tiers}
-    </div>
-    <p class="tiers__note">Every package is quoted on your actual word count and scope. Nothing is charged before you have seen the number in writing.</p>
   </div>
 </section>
 

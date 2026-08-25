@@ -499,58 +499,6 @@ const home = {
     lede: 'The work that continues after publication day.'
   },
 
-  /* --------------------------------------------------------------------
-     PACKAGES — bundles of the services above. Deliberately no prices:
-     every book is quoted on its real word count and scope. If Amazo sets
-     fixed prices later, add a `price` key and surface it in build.js.
-     -------------------------------------------------------------------- */
-  packages: {
-    kicker: 'Ways to work with us',
-    title: 'Three routes to a <em>finished book</em>',
-    lede: 'Start wherever your manuscript actually is. Every stage can also be bought on its own — these are simply the combinations most authors end up needing.',
-    tiers: [
-      {
-        name: 'Manuscript',
-        for: 'You have a draft that needs to become a book.',
-        icon: 'edit',
-        includes: [
-          'Developmental read and editorial report',
-          'Line and copy edit, tracked changes',
-          'Final proofread on formatted pages',
-          'Print and ebook typesetting',
-          'Style sheet kept for future editions'
-        ]
-      },
-      {
-        name: 'Publish',
-        for: 'You want the book on sale, set up properly.',
-        icon: 'cart',
-        featured: true,
-        includes: [
-          'Everything in Manuscript',
-          'Original cover design, print and ebook',
-          'ISBN registration in your name',
-          'KDP listing, categories and keyword research',
-          'Distribution to the major retail channels',
-          'Launch-week pricing and availability checks'
-        ]
-      },
-      {
-        name: 'Launch',
-        for: 'You want readers to actually find it.',
-        icon: 'rocket',
-        includes: [
-          'Everything in Publish',
-          'Audiobook production and narrator casting',
-          'Author website and mailing-list setup',
-          'Review campaign and ARC distribution',
-          'Ninety days of marketing support',
-          'Monthly sales and ranking reporting'
-        ]
-      }
-    ]
-  },
-
   /* Genres the writing and editorial teams actually take on. */
   genreDetail: {
     kicker: 'What we take on',
