@@ -212,9 +212,17 @@
     /* ---------- Entry popup ----------
        Opens once per browsing session, after the delay set on the element.
        Anything that dismisses it records the fact, so it does not reappear
-       on every page the visitor clicks through to. */
+       on every page the visitor clicks through to.
+
+       That "once per session" rule makes the popup hard to review — once you
+       have closed it, it will not come back until you open a new tab. Append
+       #popup (or ?popup) to the URL to force it open and ignore the flag.
+       The hash form is the reliable one: some static servers rewrite clean
+       URLs and drop the query string before the page ever sees it. */
     var modal = document.getElementById('entry-modal');
-    if (modal && !sessionStorage.getItem('amazo-modal-seen')) {
+    var forcePopup = /[?&]popup\b/.test(window.location.search) ||
+                     /^#popup\b/.test(window.location.hash);
+    if (modal && (forcePopup || !sessionStorage.getItem('amazo-modal-seen'))) {
       var panel = modal.querySelector('.modal__panel');
       var lastFocus = null;
 
@@ -266,7 +274,22 @@
         });
       }
 
-      window.setTimeout(openModal, parseInt(modal.getAttribute('data-delay'), 10) || 6000);
+      /* `|| 6000` would be wrong here: a configured delay of 0 is falsy and
+         would silently become six seconds. Only fall back on a genuinely
+         unusable value. */
+      var delay = parseInt(modal.getAttribute('data-delay'), 10);
+      if (isNaN(delay) || delay < 0) delay = 6000;
+
+      /* With no delay the modal opens before the first paint, so there is no
+         "closed" frame to fade from — and a transition that never starts
+         leaves the panel at opacity 0 while the page scroll is already
+         locked, which looks like a frozen page. Open instantly instead. */
+      if (delay === 0) {
+        modal.classList.add('modal--instant');
+        openModal();
+      } else {
+        window.setTimeout(openModal, delay);
+      }
     }
 
     /* ---------- Pre-select the service from ?service= ----------

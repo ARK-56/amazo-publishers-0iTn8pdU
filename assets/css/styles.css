@@ -1409,6 +1409,11 @@ img.book__art{ object-fit: cover; }
 }
 .modal.is-open .modal__panel{ opacity: 1; transform: none; }
 
+/* No-delay mode: nothing to fade from, so skip the transition entirely
+   rather than risk it stalling and leaving an invisible, scroll-locked page. */
+.modal--instant .modal__panel,
+.modal--instant .modal__backdrop{ transition: none; }
+
 /* Same drawn library backdrop as the hero, thrown further out of focus */
 .modal__panel .hero__backdrop{
   position: absolute;

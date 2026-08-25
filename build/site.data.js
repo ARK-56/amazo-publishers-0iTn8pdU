@@ -39,7 +39,7 @@ const site = {
      business will not actually give. */
   popup: {
     enabled: true,
-    delay: 6000,          // ms before it appears, on first visit of a session
+    delay: 0,             // ms before it appears; 0 = as soon as the DOM is ready
     lead: 'Launch',       // the oversized first word
     title: 'Your <em>Book</em>',
     /* The banner across the middle. This one is true — the editing service
