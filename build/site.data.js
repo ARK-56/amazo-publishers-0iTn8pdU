@@ -33,6 +33,14 @@ const site = {
     alt:    'Amazo Publishers'
   },
 
+  /* Screenshot shown on the tablet in the About composition — a real store
+     listing for one of the titles. Extension is probed like the book covers,
+     and if no file is found the tablet falls back to drawn artwork. */
+  listingShot: {
+    src: 'assets/img/amz-ss',
+    alt: 'The Weirdos by Chinmay Chakravarty listed for sale on Amazon'
+  },
+
   /* Entry popup, mirroring the reference site's lead modal. Set enabled:false
      to switch it off site-wide. `offer` is deliberately empty — put a real,
      honoured offer here or leave it out; do not advertise a discount the

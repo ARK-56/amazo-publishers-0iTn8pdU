@@ -1079,6 +1079,27 @@ img.book__art{ object-fit: cover; }
 }
 .device-art{ width: 100%; height: auto; display: block; }
 
+/* Tablet bezel drawn in CSS so a real screenshot can sit inside it */
+.device{
+  background: #14140F;
+  border-radius: 20px;
+  padding: 5.5%;
+  box-shadow: inset 0 0 0 2px #2A2A24;
+}
+.device__screen{
+  /* Portrait window cropped to the top of the page — a full-length capture
+     scaled to fit would be unreadable at this size. */
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border-radius: 6px;
+  background: #FDFDFB;
+}
+.device__screen img{
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
 .listing-art:hover .listing-art__book{ transform: rotate(-4deg) translateY(-6px); }
 .listing-art:hover .listing-art__device{ transform: translateY(-8px); }
 

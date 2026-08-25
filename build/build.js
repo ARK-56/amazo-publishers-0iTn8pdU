@@ -481,12 +481,23 @@ const deviceArt = () => {
   </svg>`;
 };
 
-/* Cover standing behind the tablet — the physical book beside its listing. */
+/* Cover standing behind the tablet — the physical book beside its listing.
+   With a real screenshot available the tablet becomes a CSS bezel around it;
+   without one it falls back to the drawn store page. */
 const listingArt = () => {
+  const shot = site.listingShot && resolveCover(site.listingShot.src);
+  const device = shot
+    ? `<div class="device">
+        <div class="device__screen">
+          <img src="${shot}" alt="${attr(site.listingShot.alt)}" loading="lazy" decoding="async">
+        </div>
+      </div>`
+    : deviceArt();
+
   return `
     <div class="listing-art reveal">
       <div class="listing-art__book">${coverArt(home.books[0], 0)}</div>
-      <div class="listing-art__device">${deviceArt()}</div>
+      <div class="listing-art__device">${device}</div>
     </div>`;
 };
 
