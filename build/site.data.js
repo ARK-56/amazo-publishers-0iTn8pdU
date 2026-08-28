@@ -86,7 +86,9 @@ const icons = {
   phone:    '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/>',
   pin:      '<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>',
   money:    '<circle cx="12" cy="12" r="10"/><path d="M12 6v12"/><path d="M15 9.5c0-1.38-1.34-2.5-3-2.5s-3 1.12-3 2.5S10.34 12 12 12s3 1.12 3 2.5-1.34 2.5-3 2.5-3-1.12-3-2.5"/>',
-  plus:     '<path d="M12 5v14"/><path d="M5 12h14"/>'
+  plus:     '<path d="M12 5v14"/><path d="M5 12h14"/>',
+  crayon:   '<path d="M6.5 20.5 3 21l.5-3.5L15 6l3 3-11.5 11.5z"/><path d="M14 7l3 3"/><path d="M16.5 4.5a2.1 2.1 0 0 1 3 3L18 9l-3-3 1.5-1.5z"/>',
+  speech:   '<path d="M21 12a8 8 0 0 1-8 8H8l-5 3 1.4-4.2A8 8 0 0 1 13 4a8 8 0 0 1 8 8z"/><path d="M9 11h.01"/><path d="M13 11h.01"/><path d="M17 11h.01"/>'
 };
 
 /* --------------------------------------------------------------------------
@@ -460,6 +462,59 @@ const services = [
       ['Publish', 'Formatted and uploaded, or handed over ready to post.']
     ],
     why: 'One good article a month beats thirty thin ones. We write the one.'
+  },
+  {
+    slug: 'childrens-books',
+    title: 'Children’s Book Publishing',
+    nav: 'Children’s Books',
+    primary: false,
+    icon: 'crayon',
+    short: 'Picture books, chapter books, middle-grade novels, verse and comics — written, illustrated and produced for the age they are actually for.',
+    heroTitle: 'Books children ask for <em>again</em>',
+    lede: 'Writing for children is not writing shorter. It is writing to a reading age, a page count and a read-aloud rhythm, with pictures carrying half the story. We produce for every stage from board book to middle grade.',
+    intro: 'A children’s book has constraints an adult novel does not. Picture books run to a 32-page signature, so the story has to break across spreads before a word is typeset. Early readers live inside a controlled vocabulary. Middle-grade novels have to hold a reader who will abandon the book the moment it slows down. And in every one of them, the illustrations are not decoration — they carry meaning the text deliberately leaves out. We plan all of that before anyone starts drawing.',
+    includes: [
+      'Picture books — 32-page spread planning, page-turn beats and read-aloud pacing',
+      'Early readers and chapter books calibrated to a target reading age',
+      'Middle-grade and young-adult novels, developmental edit included',
+      'Rhyme and verse checked for scansion, not just for rhyme',
+      'Comics and graphic novels — script, panel breakdown, lettering and layout',
+      'Illustration: character sheets, roughs, finals and a matching cover',
+      'Print specification for board, paperback or hardback, including bleed and trim'
+    ],
+    process: [
+      ['Age and format', 'We fix the reading age, page count and trim before drafting, because those decide everything after.'],
+      ['Manuscript', 'Text first, marked up with what each spread or panel has to show.'],
+      ['Illustration', 'Character sheets, then roughs across the whole book, then finals once the sequence works.'],
+      ['Production', 'Typeset to the printer’s specification and proofed on the actual page size.']
+    ],
+    why: 'Children are the least forgiving readers there are. They do not finish a book out of politeness.'
+  },
+  {
+    slug: 'comics-graphic-novels',
+    title: 'Comics & Graphic Novels',
+    nav: 'Comics & Graphic Novels',
+    primary: false,
+    icon: 'speech',
+    short: 'Full sequential-art production — script, thumbnails, pencils, inks, colour and lettering — for all ages.',
+    heroTitle: 'Words and pictures, <em>in sequence</em>',
+    lede: 'A comic script is not a novel with pictures attached. It is a shot list. We write, draw, letter and lay out complete books for readers of any age.',
+    intro: 'Sequential art has its own grammar: what a panel shows, what the gutter between two panels asks the reader to supply, where the eye lands on a page turn. Getting that wrong produces a book that is confusing to read even when every drawing in it is good. We script to the panel, thumbnail the whole book before a single page is finished, and letter as part of the artwork rather than pasting it on afterwards.',
+    includes: [
+      'Full script to industry format — panel descriptions, dialogue and captions',
+      'Thumbnail pass across the whole book before finished art begins',
+      'Pencils, inks and flat or rendered colour',
+      'Lettering, balloon placement and sound effects treated as artwork',
+      'Page-turn planning so reveals land on the recto',
+      'Print-ready files with bleed, trim and spine width for your page count'
+    ],
+    process: [
+      ['Script', 'Written to the panel, so the artist knows what each frame carries.'],
+      ['Thumbnails', 'The whole book roughed small, where pacing problems are cheap to fix.'],
+      ['Art', 'Pencils and inks page by page, with colour once the sequence is locked.'],
+      ['Letter and assemble', 'Balloons placed, pages assembled and exported to the printer’s spec.']
+    ],
+    why: 'The story happens in the gutter between panels. That is the part worth getting right.'
   }
 ];
 
@@ -518,9 +573,14 @@ const home = {
       ['article', 'Business &amp; leadership', 'Books that carry an argument and have to survive a sceptical reader.'],
       ['clock', 'Memoir &amp; biography', 'Chronology, distance and the hard question of what to leave out.'],
       ['search', 'History &amp; popular science', 'Structural editing plus a sourcing and citation pass.'],
-      ['palette', 'Children’s &amp; middle grade', 'Reading-age calibration, illustration briefs and page-turn planning.'],
       ['audio', 'Poetry &amp; short forms', 'Sequencing, spacing and typesetting that respects the line break.'],
-      ['globe', 'Faith, self-help &amp; wellbeing', 'Claims checked, tone kept warm, and no promises the book cannot keep.']
+      ['globe', 'Faith, self-help &amp; wellbeing', 'Claims checked, tone kept warm, and no promises the book cannot keep.'],
+      /* Children's shelves, split out because each one has its own rules. */
+      ['crayon', 'Picture books', 'Planned across 32-page spreads, with the pictures carrying what the words leave out.'],
+      ['palette', 'Early readers &amp; chapter books', 'Controlled vocabulary and sentence length, pitched at a real reading age.'],
+      ['book', 'Middle grade &amp; young adult', 'Pace held tight enough that a child who is allowed to stop does not.'],
+      ['speech', 'Comics &amp; graphic novels', 'Panel breakdown, page-turn reveals and lettering set as part of the art.'],
+      ['star', 'Rhyme &amp; children’s verse', 'Scanned line by line, because a rhyme that trips ruins the read-aloud.']
     ]
   },
 
