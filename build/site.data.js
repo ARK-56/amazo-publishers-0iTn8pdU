@@ -625,6 +625,7 @@ const home = {
     ['Romance',       'Romeo Returns',                'Angan Mandal',               '4.3', 'assets/img/books/romeo-returns'],
     ['Fiction',       'The Visionaries',              'JT Beleno',                  '4.4', 'assets/img/books/the-visionaries'],
     ['Children’s',    'Boojum: Portal Guardians',     'Judy Shank Cyg',             '4.6', 'assets/img/books/boojum-portal-guardians'],
+    ['Children’s',    'Otto’s Tales: Let’s Meet a Librarian', 'PragerU',             '4.7', 'assets/img/books/ottos-tales-lets-meet-a-librarian'],
     ['Fantasy',       'Simple as Time',               'Judy Shank Cyg & William Horn', '4.4', 'assets/img/books/simple-as-time'],
     ['Fantasy',       'Emrys',                        'Judy Shank Cyg',             '4.5', 'assets/img/books/emrys'],
     ['Fantasy',       'Sword of the Healer',          'Judy Shank Cyg',             '4.6', 'assets/img/books/sword-of-the-healer'],
