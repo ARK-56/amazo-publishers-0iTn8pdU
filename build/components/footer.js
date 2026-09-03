@@ -69,7 +69,7 @@ const footer = () => {
 
       <div class="footer-brand">
         ${wordmark('', 'light')}
-        <p>${site.tagline} You keep the rights, the royalties and the accounts — every time.</p>
+        <p>${site.tagline} You keep the rights, the royalties and the accounts every time.</p>
         <div class="socials">
           <a href="${site.social.facebook}" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 9h3V6h-3c-2.2 0-4 1.8-4 4v2H8v3h2v7h3v-7h3l1-3h-4v-2c0-.6.4-1 1-1z"/></svg></a>
           <a href="${site.social.instagram}" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="3.6"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg></a>
