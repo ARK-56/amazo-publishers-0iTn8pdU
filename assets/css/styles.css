@@ -265,7 +265,7 @@ h1 em, h2 em, h3 em, .em{
   flex-shrink: 0;
 }
 .wordmark__img{
-  width: 120px;
+  width: 255px;
   height: auto;
   max-height: 60px;
   object-fit: contain;
