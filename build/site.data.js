@@ -28,8 +28,10 @@ const site = {
   logo: {
     src:    'assets/img/logo.png',
     light:  'assets/img/logo.png',
-    width:  286,
-    height: 56,
+    /* Must match the file's real pixel size — these reserve space before the
+       image loads, and a wrong ratio makes the header jump. */
+    width:  1000,
+    height: 233,
     alt:    'Amazo Publishers'
   },
 
@@ -88,7 +90,9 @@ const icons = {
   money:    '<circle cx="12" cy="12" r="10"/><path d="M12 6v12"/><path d="M15 9.5c0-1.38-1.34-2.5-3-2.5s-3 1.12-3 2.5S10.34 12 12 12s3 1.12 3 2.5-1.34 2.5-3 2.5-3-1.12-3-2.5"/>',
   plus:     '<path d="M12 5v14"/><path d="M5 12h14"/>',
   crayon:   '<path d="M6.5 20.5 3 21l.5-3.5L15 6l3 3-11.5 11.5z"/><path d="M14 7l3 3"/><path d="M16.5 4.5a2.1 2.1 0 0 1 3 3L18 9l-3-3 1.5-1.5z"/>',
-  speech:   '<path d="M21 12a8 8 0 0 1-8 8H8l-5 3 1.4-4.2A8 8 0 0 1 13 4a8 8 0 0 1 8 8z"/><path d="M9 11h.01"/><path d="M13 11h.01"/><path d="M17 11h.01"/>'
+  speech:   '<path d="M21 12a8 8 0 0 1-8 8H8l-5 3 1.4-4.2A8 8 0 0 1 13 4a8 8 0 0 1 8 8z"/><path d="M9 11h.01"/><path d="M13 11h.01"/><path d="M17 11h.01"/>',
+  heart:    '<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 1 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8z"/>',
+  ring:     '<circle cx="12" cy="14.5" r="6"/><path d="M9 8.5 12 4l3 4.5"/><path d="M8.5 8.5h7"/>'
 };
 
 /* --------------------------------------------------------------------------
@@ -515,6 +519,33 @@ const services = [
       ['Letter and assemble', 'Balloons placed, pages assembled and exported to the printer’s spec.']
     ],
     why: 'The story happens in the gutter between panels. That is the part worth getting right.'
+  },
+  {
+    slug: 'romance-love-stories',
+    title: 'Romance & Love Stories',
+    nav: 'Romance & Love Stories',
+    primary: false,
+    icon: 'heart',
+    short: 'Contemporary, historical, romantasy and romantic suspense — written and edited to the promise romance readers actually buy.',
+    heroTitle: 'A love story that keeps its <em>promise</em>',
+    lede: 'Romance is the most demanding commercial genre there is, because its readers know it best. They can tell by chapter three whether a book understands what it is doing.',
+    intro: 'Romance has a contract with its reader that no other genre enforces so strictly: the central relationship is the plot, not the subplot, and it ends in a happily-ever-after or a happy-for-now. Break that and the reviews will say so within a week. Inside the contract there is enormous room — but the beats, the point-of-view discipline and the heat level all have to be deliberate. We edit and write to those conventions rather than around them.',
+    includes: [
+      'Contemporary, historical, romantasy and romantic-suspense manuscripts',
+      'Relationship-beat structure — meet, pull, wound, black moment, grovel, resolution',
+      'Dual-POV discipline, so both leads carry an arc rather than one reacting',
+      'Heat level set and held consistently, from closed-door to explicit',
+      'Trope and comparable-title positioning, because that is how romance is shopped',
+      'Historical period checking for language, dress, money and social rules',
+      'Series planning for interconnected standalones and their recurring cast'
+    ],
+    process: [
+      ['Positioning', 'Subgenre, heat level and comparable titles agreed first — they decide the cover and the categories as much as the writing.'],
+      ['Beat map', 'The relationship plotted against the emotional beats before any drafting.'],
+      ['Draft or edit', 'Written or worked through with both leads tracked separately.'],
+      ['Consistency pass', 'Heat, voice and period held steady across the whole book, and across a series.']
+    ],
+    why: 'Romance readers finish four books a week. They are not forgiving, and they are the most loyal audience in publishing.'
   }
 ];
 
@@ -569,7 +600,7 @@ const home = {
     lede: 'We match every book to someone who knows the shelf it belongs on — the conventions, the comparable titles and the readers who buy them.',
     items: [
       ['book', 'Literary &amp; upmarket fiction', 'Voice-led novels where the sentences carry as much weight as the plot.'],
-      ['pen', 'Commercial fiction', 'Crime, thriller, romance and speculative work, edited to genre expectation.'],
+      ['pen', 'Commercial fiction', 'Crime, thriller and speculative work, edited to genre expectation.'],
       ['article', 'Business &amp; leadership', 'Books that carry an argument and have to survive a sceptical reader.'],
       ['clock', 'Memoir &amp; biography', 'Chronology, distance and the hard question of what to leave out.'],
       ['search', 'History &amp; popular science', 'Structural editing plus a sourcing and citation pass.'],
@@ -580,7 +611,12 @@ const home = {
       ['palette', 'Early readers &amp; chapter books', 'Controlled vocabulary and sentence length, pitched at a real reading age.'],
       ['book', 'Middle grade &amp; young adult', 'Pace held tight enough that a child who is allowed to stop does not.'],
       ['speech', 'Comics &amp; graphic novels', 'Panel breakdown, page-turn reveals and lettering set as part of the art.'],
-      ['star', 'Rhyme &amp; children’s verse', 'Scanned line by line, because a rhyme that trips ruins the read-aloud.']
+      ['star', 'Rhyme &amp; children’s verse', 'Scanned line by line, because a rhyme that trips ruins the read-aloud.'],
+      /* Romance shelves, split out because the subgenres are shopped separately. */
+      ['heart', 'Contemporary romance', 'Beat structure and dual POV, with the heat level set and held.'],
+      ['ring', 'Historical romance', 'Period language, money and social rules checked against the era.'],
+      ['rocket', 'Romantasy', 'A romance arc and a magic system that have to resolve together.'],
+      ['shield', 'Romantic suspense', 'A threat plot paced so it tightens the relationship instead of pausing it.']
     ]
   },
 

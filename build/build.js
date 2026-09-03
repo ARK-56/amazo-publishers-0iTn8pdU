@@ -73,7 +73,7 @@ const layout = ({ title, desc, current, body }) => `<!DOCTYPE html>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,500;0,6..72,600;1,6..72,500;1,6..72,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="icon" href="assets/img/favicon.ico" type="image/svg+xml">
+<link rel="icon" href="assets/img/favicon.ico" sizes="any">
 <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
@@ -1170,7 +1170,11 @@ write('about.html', aboutPage());
 write('contact.html', contactPage());
 services.forEach((s) => write(href(s), servicePage(s)));
 legal.forEach((p) => write(`${p.slug}.html`, legalPage(p)));
-write(path.join('assets', 'img', 'favicon.ico'), favicon);
+/* favicon.ico is a real supplied binary, not generated — writing the SVG
+   source into it replaced a 10KB icon with 344 bytes of markup on every
+   build. The drawn "A" is kept as an SVG alongside it, restored only if
+   absent so a supplied file is never clobbered. */
+writeIfMissing(path.join('assets', 'img', 'favicon.svg'), favicon);
 writeIfMissing(path.join('assets', 'img', 'logo.svg'), logoPlaceholder(false));
 writeIfMissing(path.join('assets', 'img', 'logo-light.svg'), logoPlaceholder(true));
 

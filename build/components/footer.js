@@ -23,7 +23,7 @@ const WRITING_LINKS = [
   'amazon-book-publishing',
   'childrens-books',
   'comics-graphic-novels',
-  'blog-article-writing'
+  'romance-love-stories'
 ];
 const OTHER_LINKS = [
   'book-cover-design',
@@ -33,7 +33,8 @@ const OTHER_LINKS = [
   'book-promotion',
   'book-video-trailer',
   'author-website',
-  'website-content-writing'
+  'website-content-writing',
+  'blog-article-writing'
 ];
 
 /* These two lists are hand-ordered rather than derived, so a newly added

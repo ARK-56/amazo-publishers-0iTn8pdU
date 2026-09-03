@@ -279,7 +279,15 @@ h1 em, h2 em, h3 em, .em{
   background: var(--paper);
   border-radius: 8px;
 }
-.site-footer .wordmark__img{ width: 289px; }
+/* The logo's wordmark and tagline are near-black — 1.06:1 against the ink
+   footer, effectively invisible. Until there is a knockout version, the
+   footer copy sits on a paper plate so the whole mark stays readable. */
+.site-footer .wordmark__img{
+  width: 258px;
+  background: var(--paper);
+  padding: 10px 16px;
+  border-radius: 12px;
+}
 
 @media (max-width: 620px){
   .wordmark__img{ width: 100px; max-height: 52px; }
