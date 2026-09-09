@@ -7,7 +7,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { site, services, home, legal } = require('./site.data.js');
+const { site, services, home, authors, legal } = require('./site.data.js');
 
 /* Shared helpers and the two site-wide components. Every page goes through
    layout(), which renders header() and footer() — so editing either file
@@ -89,6 +89,29 @@ ${footer()}
 </body>
 </html>
 `;
+
+/* ---------- authors ---------- */
+const byAuthorName = Object.fromEntries(authors.map((a) => [a.name, a]));
+const authorHref = (name) => (byAuthorName[name] ? `author-${byAuthorName[name].slug}.html` : '');
+
+/* Card in the hero flagging the newest title, linked to its author page. */
+const recentCard = (a) => {
+  const row = home.books.find((b) => b[2] === a.name);
+  if (!row) return '';
+  return `
+      <a class="recent" href="${authorHref(a.name)}">
+        <span class="recent__cover">${coverArt(row, 0)}</span>
+        <span class="recent__body">
+          <span class="recent__label">Recently published</span>
+          <span class="recent__title">${row[1]}</span>
+          <span class="recent__by">
+            <span class="recent__avatar">${avatarArt(a.name, a.avatarSeed || 0)}</span>
+            <span class="recent__name">${a.name}</span>
+          </span>
+        </span>
+        ${icon('arrow', 'recent__arrow')}
+      </a>`;
+};
 
 /* ---------- shared section partials ---------- */
 
@@ -600,15 +623,20 @@ const homePage = () => {
         <button class="tab${i === 0 ? ' is-active' : ''}" type="button" role="tab" aria-selected="${i === 0}" data-genre="${g}">${g === 'all' ? 'All' : g}</button>`).join('');
 
   const books = home.books.map((bk, i) => {
-    const [genre, name, author, rating] = bk;
+    const [genre, name, author, rating, , badge] = bk;
+    const authorPageHref = authorHref(author);
+    const nameCell = authorPageHref
+      ? `<a class="book__name book__name--link" href="${authorPageHref}">${name}</a>`
+      : `<span class="book__name">${name}</span>`;
     return `
         <div class="book reveal" data-genre="${genre}">
           <div class="book__cover">
             ${coverArt(bk, i)}
             <span class="book__tag">${genre}</span>
+            ${badge ? `<span class="book__badge">${badge}</span>` : ''}
           </div>
           <div class="book__meta">
-            <span class="book__name">${name}</span>
+            ${nameCell}
             <span class="book__rating">${solidStar}${rating}</span>
           </div>
           <span class="book__author">${author}</span>
@@ -645,10 +673,11 @@ const homePage = () => {
       <div class="hero__stack">
         ${home.books.slice(0, 3).map((bk, i) => book3d(bk, i)).join('')}
       </div>
+      ${authors.length ? recentCard(authors[0]) : `
       <div class="hero__badge">
         <span class="hero__badge-stars">${solidStar.repeat(5)}</span>
         <span class="hero__badge-text">Authors keep <strong>100%</strong> of royalties</span>
-      </div>
+      </div>`}
     </div>
   </div>
 </section>
@@ -723,7 +752,7 @@ ${ctaBand('Are you ready to become a <em>published</em> author?', 'Amazo Publish
   </div>
 </section>
 
-<section class="section">
+<section class="section" id="shelf">
   <div class="shell">
     <div class="section-head section-head--center">
       <span class="kicker">Our shelf</span>
@@ -1104,6 +1133,103 @@ const legalPage = (p) => {
 };
 
 /* ==========================================================================
+   AUTHOR PAGES
+   ========================================================================== */
+const authorPage = (a) => {
+  const row = home.books.find((b) => b[2] === a.name);
+
+  const story = a.story.map((p) => `<p>${p}</p>`).join('\n      ');
+  const journey = a.journey.map(([t, d], i) => `
+        <li class="stage">
+          <span class="stage__num">${String(i + 1).padStart(2, '0')}</span>
+          <span class="stage__name">${t}</span>
+          <span class="stage__text">${d}</span>
+        </li>`).join('');
+
+  const body = `
+<section class="page-hero">
+  <div class="shell">
+    <p class="crumbs"><a href="index.html">Home</a> &nbsp;/&nbsp; <a href="index.html#shelf">Our shelf</a> &nbsp;/&nbsp; <span>${a.name}</span></p>
+    <div class="page-hero__grid">
+      <div>
+        <span class="kicker kicker--orange">${a.role}</span>
+        <h1 class="display">${a.name}</h1>
+        <p class="lede" style="margin-top:18px">${a.lede}</p>
+        <div class="author-book">
+          <span class="author-book__label">The book</span>
+          <span class="author-book__title">${a.book.title}</span>
+          <span class="author-book__meta">${a.book.series} &nbsp;·&nbsp; ${a.book.genre}</span>
+          <span class="author-book__tagline">&ldquo;${a.book.tagline}&rdquo;</span>
+        </div>
+        <div class="btn-row" style="margin-top:28px">
+          <a class="btn btn--solid" href="contact.html?service=${encodeURIComponent('Book Publishing')}">Publish with us ${icon('arrow')}</a>
+          <a class="btn" href="index.html#shelf">See the shelf</a>
+        </div>
+      </div>
+      <div class="author-cover">
+        ${row ? coverArt(row, 0) : ''}
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="shell layout-aside">
+    <div class="prose">
+      <h2>${a.storyHeading}</h2>
+      ${story}
+    </div>
+    <aside class="sticky-aside">
+      <div class="aside-card">
+        <span class="author-card__avatar">${avatarArt(a.name, a.avatarSeed || 0)}</span>
+        <h3>${a.name}</h3>
+        <p>${a.role}</p>
+        <a class="btn btn--solid" href="contact.html" style="width:100%">Start your book ${icon('arrow')}</a>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<section class="section section--tight section--warm">
+  <div class="shell">
+    <div class="section-head section-head--center" style="margin-bottom:30px">
+      <span class="kicker">${a.journeyHeading}</span>
+      <h2 class="h2">From a folder of notes to a <em>finished book</em></h2>
+    </div>
+    <ol class="stage-list stage-list--detail reveal">${journey}
+    </ol>
+  </div>
+</section>
+
+<section class="section section--tight section--ink qtile-section">
+  <div class="shell">
+    <div class="section-head section-head--center" style="margin-bottom:26px">
+      <span class="kicker">In the author’s words</span>
+      <h2 class="h2" style="color:var(--paper)">What ${a.name.split(' ')[0]} <em>says</em></h2>
+    </div>
+    <figure class="author-quote">
+      <div class="author-quote__stars">${solidStar.repeat(5)}</div>
+      <blockquote>&ldquo;${a.testimonial.quote}&rdquo;</blockquote>
+      <figcaption>
+        <span class="author-quote__avatar">${avatarArt(a.name, a.avatarSeed || 0)}</span>
+        <span>${a.testimonial.attrib}</span>
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+${ctaBand('Your book, made <em>properly</em>', 'Tell us where the manuscript is now. We will tell you honestly what it needs.', 2)}
+`;
+
+  return layout({
+    title: `${a.name} — ${a.book.title} — ${site.name}`,
+    desc: attr(a.lede),
+    current: `author-${a.slug}.html`,
+    body
+  });
+};
+
+/* ==========================================================================
    FAVICON
    ========================================================================== */
 /* An "A" drawn as strokes rather than <text> — a favicon is an isolated
@@ -1170,6 +1296,7 @@ write('about.html', aboutPage());
 write('contact.html', contactPage());
 services.forEach((s) => write(href(s), servicePage(s)));
 legal.forEach((p) => write(`${p.slug}.html`, legalPage(p)));
+authors.forEach((a) => write(`author-${a.slug}.html`, authorPage(a)));
 /* favicon.ico is a real supplied binary, not generated — writing the SVG
    source into it replaced a 10KB icon with 344 bytes of markup on every
    build. The drawn "A" is kept as an SVG alongside it, restored only if
@@ -1178,4 +1305,6 @@ writeIfMissing(path.join('assets', 'img', 'favicon.svg'), favicon);
 writeIfMissing(path.join('assets', 'img', 'logo.svg'), logoPlaceholder(false));
 writeIfMissing(path.join('assets', 'img', 'logo-light.svg'), logoPlaceholder(true));
 
-console.log(`\nDone — ${3 + services.length + legal.length} pages.\n`);
+console.log(`
+Done — ${3 + services.length + legal.length + authors.length} pages.
+`);

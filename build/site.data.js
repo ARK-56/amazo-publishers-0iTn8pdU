@@ -648,7 +648,7 @@ const home = {
 
   /* Tabs on the bestsellers shelf. Must match the genre field on `books`
      below — a tab with no matching title filters to an empty grid. */
-  genres: ['Fantasy', 'Fiction', 'Romance', 'Children’s', 'Short Stories'],
+  genres: ['Thriller', 'Fantasy', 'Fiction', 'Romance', 'Children’s', 'Short Stories'],
 
   /* Showcase shelf.  [genre, title, author, rating, coverImage?]
      The cover path carries NO extension — the build probes for .jpg/.jpeg/
@@ -657,6 +657,8 @@ const home = {
      artwork rather than shipping a broken image.
      RATINGS ARE PLACEHOLDER — put the real figures in before launch. */
   books: [
+    /* 6th field is an optional badge shown on the shelf tile. */
+    ['Thriller',      'The Groom Lake Protocol',      'Joel Felix',                 '4.8', 'assets/img/books/the-groom-lake-protocol', 'Recently published'],
     ['Fiction',       'The Weirdos',                  'Chinmay Chakravarty',        '4.5', 'assets/img/books/the-weirdos'],
     ['Romance',       'Romeo Returns',                'Angan Mandal',               '4.3', 'assets/img/books/romeo-returns'],
     ['Fiction',       'The Visionaries',              'JT Beleno',                  '4.4', 'assets/img/books/the-visionaries'],
@@ -700,6 +702,48 @@ const home = {
 /* --------------------------------------------------------------------------
    LEGAL / STATIC PAGES
    -------------------------------------------------------------------------- */
+/* --------------------------------------------------------------------------
+   AUTHORS — one page each, linked from the hero and the bestsellers shelf.
+
+   PLACEHOLDER COPY. The story, journey and testimonial below are drafted,
+   not supplied by the author. Replace them with his own words before this
+   goes live, and get written permission for the testimonial — it is
+   attributed to a named person.
+   -------------------------------------------------------------------------- */
+const authors = [
+  {
+    slug: 'joel-felix',
+    name: 'Joel Felix',
+    role: 'Thriller novelist',
+    avatarSeed: 0,
+    book: {
+      title: 'The Groom Lake Protocol',
+      series: 'An Area 51 Thriller',
+      tagline: 'Truth has a classification level.',
+      genre: 'Thriller',
+      cover: 'assets/img/books/the-groom-lake-protocol'
+    },
+    lede: 'A conspiracy thriller built out of the gap between what was declassified and what was quietly left in the file.',
+    storyHeading: 'The story behind the book',
+    story: [
+      'The Groom Lake Protocol started with a reading habit rather than a plan. Joel had spent years working through declassified material — programme budgets with line items blacked out, testimony that stopped mid-sentence, aircraft that officially did not exist until decades after they had stopped flying.',
+      'What interested him was never the answer. It was the shape of the hole where the answer should have been: the fact that a government can tell the truth and still, by choosing where to stop, leave something entirely different behind.',
+      'The novel grew out of that. A facility everyone can name and nobody can enter, and a protagonist whose problem is not finding the secret but deciding what to do once the secret turns out to be less interesting than the machinery built to keep it.'
+    ],
+    journeyHeading: 'How the book was made',
+    journey: [
+      ['The idea', 'Two years of reading declassified programme files, and a folder of the moments where the record simply stops.'],
+      ['The draft', 'A first manuscript written around the research, then cut hard once it became clear the procedure was smothering the story.'],
+      ['Developmental edit', 'The middle act rebuilt so the reveal lands on character rather than exposition.'],
+      ['Design and launch', 'Cover, interior and metadata set to sit on the thriller shelf beside the books its readers already own.']
+    ],
+    testimonial: {
+      quote: 'I came in with a manuscript I could not see straight any more. What I got back was not a rewrite — it was my own book with the argument tightened and the slack taken out. The edit letter alone was worth the engagement.',
+      attrib: 'Joel Felix, on working with Amazo Publishers'
+    }
+  }
+];
+
 const legal = [
   {
     slug: 'terms',
@@ -762,4 +806,4 @@ const legal = [
   }
 ];
 
-module.exports = { site, icons, services, home, legal };
+module.exports = { site, icons, services, home, authors, legal };
