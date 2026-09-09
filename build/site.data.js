@@ -721,7 +721,11 @@ const authors = [
       series: 'An Area 51 Thriller',
       tagline: 'Truth has a classification level.',
       genre: 'Thriller',
-      cover: 'assets/img/books/the-groom-lake-protocol'
+      cover: 'assets/img/books/the-groom-lake-protocol',
+      /* 3D render used in the author page hero. It carries its own
+         perspective and shadow, so it is shown bare — no frame or radius.
+         Remove this line to fall back to the flat cover. */
+      mockup: 'assets/img/books/the-groom-lake-protocol-mockup'
     },
     lede: 'A conspiracy thriller built out of the gap between what was declassified and what was quietly left in the file.',
     storyHeading: 'The story behind the book',

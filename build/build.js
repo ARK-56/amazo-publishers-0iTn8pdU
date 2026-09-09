@@ -1166,9 +1166,16 @@ const authorPage = (a) => {
           <a class="btn" href="index.html#shelf">See the shelf</a>
         </div>
       </div>
-      <div class="author-cover">
+      ${(() => {
+        const mock = a.book.mockup && resolveCover(a.book.mockup);
+        return mock
+          ? `<div class="author-mockup">
+        <img src="${mock}" alt="${attr(a.book.title + ' by ' + a.name)}" width="1080" height="1350" fetchpriority="high" decoding="async">
+      </div>`
+          : `<div class="author-cover">
         ${row ? coverArt(row, 0) : ''}
-      </div>
+      </div>`;
+      })()}
     </div>
   </div>
 </section>

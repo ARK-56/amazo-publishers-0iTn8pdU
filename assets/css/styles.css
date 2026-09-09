@@ -854,6 +854,20 @@ h1 em, h2 em, h3 em, .em{
 .book__name--link:hover{ color: var(--orange-deep); }
 
 /* ---------- Author page ---------- */
+/* 3D render: the perspective and shadow are baked into the PNG's alpha, so
+   it gets no frame, radius or box-shadow — any of those would draw a
+   rectangle around a transparent image. */
+.author-mockup{
+  max-width: 420px;
+  margin-inline: auto;
+}
+.author-mockup img{
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 26px 44px rgba(20,20,15,.28));
+}
+
 .author-cover{
   max-width: 300px;
   margin-inline: auto;
