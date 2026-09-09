@@ -1173,50 +1173,35 @@ const authorPage = (a) => {
   </div>
 </section>
 
+${/* Testimonial rides alongside the story as a sticky left column rather
+      than sitting in its own band further down. */''}
 <section class="section">
-  <div class="shell layout-aside">
+  <div class="shell layout-aside layout-aside--left">
+    <aside class="sticky-aside">
+      <figure class="quote-card">
+        <span class="quote-card__label">In the author’s words</span>
+        <div class="quote-card__stars">${solidStar.repeat(5)}</div>
+        <blockquote>&ldquo;${a.testimonial.quote}&rdquo;</blockquote>
+        <figcaption>
+          <span class="quote-card__avatar">${avatarArt(a.name, a.avatarSeed || 0)}</span>
+          <span class="quote-card__by">${a.testimonial.attrib}</span>
+        </figcaption>
+      </figure>
+      <a class="btn btn--solid quote-card__cta" href="contact.html">Start your book ${icon('arrow')}</a>
+    </aside>
     <div class="prose">
       <h2>${a.storyHeading}</h2>
       ${story}
+
+      ${/* The journey lives in this column too. A sticky sidebar needs the
+           content beside it to be taller than the card, or it never moves. */''}
+      <h2>${a.journeyHeading}</h2>
+      <ol class="stage-list stage-list--detail reveal">${journey}
+      </ol>
     </div>
-    <aside class="sticky-aside">
-      <div class="aside-card">
-        <span class="author-card__avatar">${avatarArt(a.name, a.avatarSeed || 0)}</span>
-        <h3>${a.name}</h3>
-        <p>${a.role}</p>
-        <a class="btn btn--solid" href="contact.html" style="width:100%">Start your book ${icon('arrow')}</a>
-      </div>
-    </aside>
   </div>
 </section>
 
-<section class="section section--tight section--warm">
-  <div class="shell">
-    <div class="section-head section-head--center" style="margin-bottom:30px">
-      <span class="kicker">${a.journeyHeading}</span>
-      <h2 class="h2">From a folder of notes to a <em>finished book</em></h2>
-    </div>
-    <ol class="stage-list stage-list--detail reveal">${journey}
-    </ol>
-  </div>
-</section>
-
-<section class="section section--tight section--ink qtile-section">
-  <div class="shell">
-    <div class="section-head section-head--center" style="margin-bottom:26px">
-      <span class="kicker">In the author’s words</span>
-      <h2 class="h2" style="color:var(--paper)">What ${a.name.split(' ')[0]} <em>says</em></h2>
-    </div>
-    <figure class="author-quote">
-      <div class="author-quote__stars">${solidStar.repeat(5)}</div>
-      <blockquote>&ldquo;${a.testimonial.quote}&rdquo;</blockquote>
-      <figcaption>
-        <span class="author-quote__avatar">${avatarArt(a.name, a.avatarSeed || 0)}</span>
-        <span>${a.testimonial.attrib}</span>
-      </figcaption>
-    </figure>
-  </div>
-</section>
 
 ${ctaBand('Your book, made <em>properly</em>', 'Tell us where the manuscript is now. We will tell you honestly what it needs.', 2)}
 `;
