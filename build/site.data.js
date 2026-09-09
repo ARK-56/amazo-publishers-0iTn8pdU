@@ -714,7 +714,7 @@ const authors = [
   {
     slug: 'joel-felix',
     name: 'Joel Felix',
-    role: 'Thriller novelist',
+    role: 'Thriller novelist — First-Time Author',
     avatarSeed: 0,
     book: {
       title: 'The Groom Lake Protocol',
