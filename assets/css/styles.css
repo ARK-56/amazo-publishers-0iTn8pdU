@@ -1419,6 +1419,59 @@ img.book__art{ object-fit: cover; }
 .qtile__name{ font-size: 14.5px; font-weight: 600; color: #fff; }
 .qtile__role{ font-size: 12.5px; color: rgba(255,255,255,.78); }
 
+/* Featured author — inverted against the run of orange tiles, carrying the
+   book cover and linking through to the author page. */
+.qtile--featured{
+  width: clamp(300px, 30vw, 380px);
+  padding: 0;
+  background: var(--ink);
+  border: 1px solid rgba(242,131,10,.45);
+}
+.qtile__link{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 26px 26px 22px;
+  text-decoration: none;
+  color: inherit;
+}
+.qtile__flag{
+  align-self: flex-start;
+  margin-bottom: 14px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: var(--orange);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+.qtile--featured .qtile__stars{ color: var(--orange); }
+.qtile--featured .qtile__who{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: auto;
+}
+.qtile__cover{
+  width: 40px;
+  flex-shrink: 0;
+  border-radius: 2px 5px 5px 2px;
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+}
+.qtile__cover .book__art{ width: 100%; height: auto; display: block; aspect-ratio: 2/3; object-fit: cover; }
+.qtile--featured .qtile__role{ color: rgba(253,253,251,.6); }
+.qtile__arrow{
+  width: 15px; height: 15px;
+  flex-shrink: 0;
+  margin-left: auto;
+  color: var(--orange);
+  transition: transform .3s var(--ease);
+}
+.qtile__link:hover .qtile__arrow{ transform: translateX(4px); }
+
 /* ---------- Entry popup ---------- */
 .modal[hidden]{ display: none; }
 .modal{

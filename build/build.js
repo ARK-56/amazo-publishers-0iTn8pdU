@@ -553,19 +553,53 @@ const marquee = (items, label) => {
 /* Testimonial tiles on a continuous track, same two-run trick as marquee().
    The drawn avatar sits in the corner the selling-point tiles used for their
    icon, so the two share a shape even though only this one is still used. */
+/* Named authors with their own page come through as featured tiles: dark
+   instead of orange, carrying the book cover and linking to the page. The
+   quote is read from the author record, so it stays in one place. */
+const featuredQuotes = () => authors
+  .filter((a) => a.testimonial && a.testimonial.quote)
+  .map((a) => ({
+    featured: true,
+    text: a.testimonial.quote,
+    name: a.name,
+    role: a.role,
+    seed: a.avatarSeed || 0,
+    href: `author-${a.slug}.html`,
+    book: home.books.find((b) => b[2] === a.name)
+  }));
+
 const quoteMarquee = (items) => {
-  const tile = ([text, name, role], i) => `<li class="qtile">
+  const tile = (q, i) => {
+    if (q.featured) {
+      return `<li class="qtile qtile--featured">
+          <a class="qtile__link" href="${q.href}">
+            <span class="qtile__flag">Featured author</span>
+            <div class="qtile__stars">${solidStar.repeat(5)}</div>
+            <blockquote class="qtile__text">&ldquo;${q.text}&rdquo;</blockquote>
+            <span class="qtile__who">
+              ${q.book ? `<span class="qtile__cover">${coverArt(q.book, 0)}</span>` : ''}
+              <span>
+                <span class="qtile__name">${q.name}</span><br>
+                <span class="qtile__role">${q.role}</span>
+              </span>
+              ${icon('arrow', 'qtile__arrow')}
+            </span>
+          </a>
+        </li>`;
+    }
+    return `<li class="qtile">
           <svg class="qtile__motif" viewBox="0 0 156 72" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2">${uspMotif(i)}</svg>
           <div class="qtile__stars">${solidStar.repeat(5)}</div>
-          <blockquote class="qtile__text">&ldquo;${text}&rdquo;</blockquote>
+          <blockquote class="qtile__text">&ldquo;${q.text}&rdquo;</blockquote>
           <figcaption class="qtile__who">
-            <span class="qtile__avatar">${avatarArt(name, i)}</span>
+            <span class="qtile__avatar">${avatarArt(q.name, i)}</span>
             <span>
-              <span class="qtile__name">${name}</span><br>
-              <span class="qtile__role">${role}</span>
+              <span class="qtile__name">${q.name}</span><br>
+              <span class="qtile__role">${q.role}</span>
             </span>
           </figcaption>
         </li>`;
+  };
   const run = (hidden) =>
     `<ul class="qtile-run"${hidden ? ' aria-hidden="true"' : ''}>
         ${items.map(tile).join('\n        ')}
@@ -799,7 +833,10 @@ ${ctaBand('Are you ready to become a <em>published</em> author?', 'Amazo Publish
       <h2 class="h2" style="color:var(--paper)">What our <em>authors</em> say</h2>
     </div>
   </div>
-  ${quoteMarquee(home.testimonials)}
+  ${quoteMarquee([
+    ...featuredQuotes(),
+    ...home.testimonials.map(([text, name, role]) => ({ text, name, role }))
+  ])}
 </section>
 
 <section class="section">
