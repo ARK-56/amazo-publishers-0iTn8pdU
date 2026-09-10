@@ -679,14 +679,17 @@ const home = {
   ],
 
   /* PLACEHOLDER TESTIMONIALS — replace with real, attributable client quotes.
-     Do not ship invented reviews under real-sounding names. */
+     Do not ship invented reviews under real-sounding names.
+     4th field is a photo; without one the tile falls back to a drawn avatar.
+     NOTE: these are real faces beside invented quotes and initials — pair
+     each with the person who actually said it before launch. */
   testimonials: [
-    ['The publishing side always intimidated me. Having one person who knew the whole process and answered plainly made the difference.', 'D. L.', 'Debut novelist'],
-    ['Turning the book into an audiobook was the best decision of the launch. The casting process was genuinely thorough.', 'L. M.', 'Non-fiction author'],
-    ['I came in with an outline and no idea how any of it worked. The chapter map alone was worth the engagement.', 'M. J.', 'Memoirist'],
-    ['I wanted a ghostwriter who would not sand the edges off the story. That is what I got.', 'J. B.', 'Historical fiction'],
-    ['Every step was explained before it happened. No surprise invoices, no vanishing project manager.', 'H. J.', 'Business author'],
-    ['The cover tested better at thumbnail than anything I had commissioned before. That is what actually moved sales.', 'J. K.', 'Thriller author']
+    ['The publishing side always intimidated me. Having one person who knew the whole process and answered plainly made the difference.', 'D. L.', 'Debut novelist', 'assets/img/authors/2'],
+    ['Turning the book into an audiobook was the best decision of the launch. The casting process was genuinely thorough.', 'L. M.', 'Non-fiction author', 'assets/img/authors/3'],
+    ['I came in with an outline and no idea how any of it worked. The chapter map alone was worth the engagement.', 'M. J.', 'Memoirist', 'assets/img/authors/4'],
+    ['I wanted a ghostwriter who would not sand the edges off the story. That is what I got.', 'J. B.', 'Historical fiction', 'assets/img/authors/5'],
+    ['Every step was explained before it happened. No surprise invoices, no vanishing project manager.', 'H. J.', 'Business author', 'assets/img/authors/6'],
+    ['The cover tested better at thumbnail than anything I had commissioned before. That is what actually moved sales.', 'J. K.', 'Thriller author', 'assets/img/authors/7']
   ],
 
   faq: [
@@ -716,6 +719,7 @@ const authors = [
     name: 'Joel Felix',
     role: 'Thriller novelist — First-Time Author',
     avatarSeed: 0,
+    photo: 'assets/img/authors/joel-felix',
     book: {
       title: 'The Groom Lake Protocol',
       series: 'An Area 51 Thriller',

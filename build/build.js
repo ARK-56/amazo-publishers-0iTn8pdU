@@ -91,6 +91,15 @@ ${footer()}
 `;
 
 /* ---------- authors ---------- */
+
+/* A real photo when one is on disk, otherwise the drawn avatar. Same
+   extension probing as the book covers, so the file may be any format. */
+const portrait = (name, seed, photo) => {
+  const src = resolveCover(photo);
+  return src
+    ? `<img class="avatar-art" src="${src}" alt="${attr(name)}" loading="lazy" decoding="async" width="256" height="256">`
+    : avatarArt(name, seed);
+};
 const byAuthorName = Object.fromEntries(authors.map((a) => [a.name, a]));
 const authorHref = (name) => (byAuthorName[name] ? `author-${byAuthorName[name].slug}.html` : '');
 
@@ -105,7 +114,7 @@ const recentCard = (a) => {
           <span class="recent__label">Recently published</span>
           <span class="recent__title">${row[1]}</span>
           <span class="recent__by">
-            <span class="recent__avatar">${avatarArt(a.name, a.avatarSeed || 0)}</span>
+            <span class="recent__avatar">${portrait(a.name, a.avatarSeed || 0, a.photo)}</span>
             <span class="recent__name">${a.name}</span>
           </span>
         </span>
@@ -564,6 +573,7 @@ const featuredQuotes = () => authors
     name: a.name,
     role: a.role,
     seed: a.avatarSeed || 0,
+    photo: a.photo,
     href: `author-${a.slug}.html`,
     book: home.books.find((b) => b[2] === a.name)
   }));
@@ -592,7 +602,7 @@ const quoteMarquee = (items) => {
           <div class="qtile__stars">${solidStar.repeat(5)}</div>
           <blockquote class="qtile__text">&ldquo;${q.text}&rdquo;</blockquote>
           <figcaption class="qtile__who">
-            <span class="qtile__avatar">${avatarArt(q.name, i)}</span>
+            <span class="qtile__avatar">${portrait(q.name, i, q.photo)}</span>
             <span>
               <span class="qtile__name">${q.name}</span><br>
               <span class="qtile__role">${q.role}</span>
@@ -835,7 +845,7 @@ ${ctaBand('Are you ready to become a <em>published</em> author?', 'Amazo Publish
   </div>
   ${quoteMarquee([
     ...featuredQuotes(),
-    ...home.testimonials.map(([text, name, role]) => ({ text, name, role }))
+    ...home.testimonials.map(([text, name, role, photo]) => ({ text, name, role, photo }))
   ])}
 </section>
 
@@ -1227,7 +1237,7 @@ ${/* Testimonial rides alongside the story as a sticky left column rather
         <div class="quote-card__stars">${solidStar.repeat(5)}</div>
         <blockquote>&ldquo;${a.testimonial.quote}&rdquo;</blockquote>
         <figcaption>
-          <span class="quote-card__avatar">${avatarArt(a.name, a.avatarSeed || 0)}</span>
+          <span class="quote-card__avatar">${portrait(a.name, a.avatarSeed || 0, a.photo)}</span>
           <span class="quote-card__by">${a.testimonial.attrib}</span>
         </figcaption>
       </figure>

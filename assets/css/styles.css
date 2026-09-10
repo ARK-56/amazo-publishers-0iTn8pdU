@@ -827,6 +827,9 @@ h1 em, h2 em, h3 em, .em{
   box-shadow: 0 0 0 1px var(--line);
 }
 .recent__avatar .avatar-art{ width: 100%; height: 100%; display: block; }
+/* Real portraits are square today, but cover keeps any future non-square
+   photo from being stretched into its round frame. */
+img.avatar-art{ object-fit: cover; }
 .recent__name{ font-size: 12.5px; color: var(--paper-dim); }
 .recent__arrow{
   width: 15px; height: 15px;
