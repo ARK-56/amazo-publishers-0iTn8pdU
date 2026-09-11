@@ -1066,6 +1066,23 @@ img.book__art{ object-fit: cover; }
   letter-spacing: .04em;
   color: var(--paper-dim);
 }
+/* Only titles with a retail link get this, so the tile is a flex column and
+   the link sits at the foot — otherwise one longer tile would knock the
+   baseline of everything beside it in the row. */
+.book{ display: flex; flex-direction: column; }
+.book__buy{
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  align-self: flex-start;
+  margin-top: 10px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--orange-deep);
+  text-decoration: none;
+}
+.book__buy svg{ width: 13px; height: 13px; transition: transform .25s var(--ease); }
+.book__buy:hover svg{ transform: translateX(3px); }
 .book__rating{ color: var(--orange-deep); font-weight: 600; display:inline-flex; align-items:center; gap:4px; }
 .book__rating svg{ width: 12px; height: 12px; }
 

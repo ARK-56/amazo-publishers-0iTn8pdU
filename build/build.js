@@ -103,6 +103,15 @@ const portrait = (name, seed, photo) => {
 const byAuthorName = Object.fromEntries(authors.map((a) => [a.name, a]));
 const authorHref = (name) => (byAuthorName[name] ? `author-${byAuthorName[name].slug}.html` : '');
 
+/* Retail link for a title, read from its author record so the shelf tile and
+   the author page cannot disagree about where the book is sold. */
+const buyFor = (name) => {
+  const a = byAuthorName[name];
+  return a && a.book && a.book.buyUrl
+    ? { url: a.book.buyUrl, label: a.book.buyLabel || 'Buy the book' }
+    : null;
+};
+
 /* Card in the hero flagging the newest title, linked to its author page. */
 const recentCard = (a) => {
   const row = home.books.find((b) => b[2] === a.name);
@@ -669,6 +678,7 @@ const homePage = () => {
   const books = home.books.map((bk, i) => {
     const [genre, name, author, rating, , badge] = bk;
     const authorPageHref = authorHref(author);
+    const buy = buyFor(author);
     const nameCell = authorPageHref
       ? `<a class="book__name book__name--link" href="${authorPageHref}">${name}</a>`
       : `<span class="book__name">${name}</span>`;
@@ -684,6 +694,7 @@ const homePage = () => {
             <span class="book__rating">${solidStar}${rating}</span>
           </div>
           <span class="book__author">${author}</span>
+          ${buy ? `<a class="book__buy" href="${buy.url}" target="_blank" rel="noopener noreferrer">${buy.label} ${icon('arrow')}</a>` : ''}
         </div>`;
   }).join('');
 
