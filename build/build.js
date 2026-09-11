@@ -1207,7 +1207,14 @@ const authorPage = (a) => {
           <span class="author-book__title">${a.book.title}</span>
           <span class="author-book__meta">${a.book.series} &nbsp;·&nbsp; ${a.book.genre}</span>
           <span class="author-book__tagline">&ldquo;${a.book.tagline}&rdquo;</span>
+          ${a.book.buyUrl ? `<a class="author-book__buy" href="${a.book.buyUrl}" target="_blank" rel="noopener noreferrer">
+            ${icon('cart')}<span>${a.book.buyLabel || 'Buy the book'}</span>${icon('arrow')}
+          </a>` : ''}
         </div>
+        ${/* The buy link lives in the book panel above. The primary button
+             stays on Amazo's own conversion — this is a publisher's site, and
+             a solid orange CTA that sends visitors to a retailer would make
+             leaving the page the most prominent action on it. */''}
         <div class="btn-row" style="margin-top:28px">
           <a class="btn btn--solid" href="contact.html?service=${encodeURIComponent('Book Publishing')}">Publish with us ${icon('arrow')}</a>
           <a class="btn" href="index.html#shelf">See the shelf</a>

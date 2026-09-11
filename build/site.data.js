@@ -729,7 +729,11 @@ const authors = [
       /* 3D render used in the author page hero. It carries its own
          perspective and shadow, so it is shown bare — no frame or radius.
          Remove this line to fall back to the flat cover. */
-      mockup: 'assets/img/books/the-groom-lake-protocol-mockup'
+      mockup: 'assets/img/books/the-groom-lake-protocol-mockup',
+      /* Retail listing. Rendered as an outbound link — new tab, rel=noopener.
+         Remove buyUrl to hide the button. */
+      buyUrl: 'https://www.amazon.com/dp/B0HJB2R948',
+      buyLabel: 'View on Amazon'
     },
     lede: 'A conspiracy thriller built out of the gap between what was declassified and what was quietly left in the file.',
     storyHeading: 'The story behind the book',

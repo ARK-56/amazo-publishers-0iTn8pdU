@@ -897,6 +897,21 @@ img.avatar-art{ object-fit: cover; }
 .author-book__title{ font-family: var(--serif); font-size: 21px; font-weight: 600; color: var(--ink); }
 .author-book__meta{ font-size: 13px; color: var(--paper-dim); }
 .author-book__tagline{ font-family: var(--serif); font-style: italic; font-size: 15px; color: var(--orange-deep); margin-top: 6px; }
+.author-book__buy{
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--orange-deep);
+  text-decoration: none;
+}
+.author-book__buy svg{ width: 16px; height: 16px; flex-shrink: 0; }
+.author-book__buy svg:last-child{ width: 14px; height: 14px; transition: transform .25s var(--ease); }
+.author-book__buy:hover svg:last-child{ transform: translateX(4px); }
 
 .author-card__avatar{
   width: 64px; height: 64px;
