@@ -596,6 +596,18 @@ const deviceArt = () => {
    without one it falls back to the drawn store page. */
 const listingArt = () => {
   const shot = site.listingShot && resolveCover(site.listingShot.src);
+
+  /* The cover has to be the book the screenshot shows, so it is looked up by
+     title. Falling back to books[0] silently is what put the wrong book here
+     before, so an unknown title fails the build instead. */
+  const wanted = site.listingShot && site.listingShot.book;
+  const book = wanted ? home.books.find((bk) => bk[1] === wanted) : home.books[0];
+  if (wanted && !book) {
+    throw new Error(
+      'site.listingShot.book is "' + wanted + '", which is not a title in home.books. ' +
+      'The cover beside the listing screenshot would fall back to a different book.'
+    );
+  }
   const device = shot
     ? `<div class="device">
         <div class="device__screen">
@@ -606,7 +618,7 @@ const listingArt = () => {
 
   return `
     <div class="listing-art reveal">
-      <div class="listing-art__book">${coverArt(home.books[0], 0)}</div>
+      <div class="listing-art__book">${coverArt(book, 0)}</div>
       <div class="listing-art__device">${device}</div>
     </div>`;
 };

@@ -63,7 +63,14 @@ const site = {
      and if no file is found the tablet falls back to drawn artwork. */
   listingShot: {
     src: 'assets/img/amz-ss',
-    alt: 'The Weirdos by Chinmay Chakravarty listed for sale on Amazon'
+    alt: 'The Weirdos by Chinmay Chakravarty listed for sale on Amazon',
+    /* Which shelf title stands beside the tablet. It has to be the book the
+       screenshot actually shows, so it is named here rather than taken from
+       whatever sits first on the shelf — that is how The Groom Lake Protocol
+       came to be paired with a listing for a different book when it was added
+       as recently published. The build fails if this title is not on the
+       shelf, so the pairing cannot drift again. */
+    book: 'The Weirdos'
   },
 
   /* Entry popup, mirroring the reference site's lead modal. Set enabled:false
