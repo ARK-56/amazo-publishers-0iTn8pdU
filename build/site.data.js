@@ -555,6 +555,16 @@ const services = [
 const home = {
   hero: {
     title: 'Unlock your imagination with <em>Amazo Publishers</em>',
+    /* Price shown under the headline. Remove this block to hide it.
+       "label" should say what the price actually buys — a bare figure in a
+       hero invites "for what?". "was" renders struck through as a reference
+       price, so it needs to be a genuine former price, not an anchor. */
+    price: {
+      label: 'Get published from',
+      was: '$299',
+      now: '$249',
+      note: 'Limited-time launch price'
+    },
     lede: 'We give writers a place to turn a manuscript, an outline, or a half-formed idea into a book that exists in the world — edited properly, designed properly, and published under your own name.',
     pointsLabel: 'Here’s what’s in store',
     points: [
