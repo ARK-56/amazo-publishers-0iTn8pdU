@@ -50,7 +50,7 @@ const site = {
      reserve space so the header does not shift while the image loads. */
   logo: {
     src:    'assets/img/logo.png',
-    light:  'assets/img/logo.png',
+    light:  'assets/img/logo-on-dark.png',
     /* Must match the file's real pixel size — these reserve space before the
        image loads, and a wrong ratio makes the header jump. */
     width:  1000,
