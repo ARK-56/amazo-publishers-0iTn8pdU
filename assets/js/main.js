@@ -348,6 +348,21 @@
       });
     });
 
+    /* ---------- Hero clip ----------
+       The clip autoplays from the markup so it starts without waiting on
+       this file. All that is left here is honouring a reduced-motion
+       preference: pause it and show controls, so the clip is still
+       reachable for anyone who wants it rather than simply gone. */
+    (function () {
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      Array.prototype.forEach.call(document.querySelectorAll('.author-media video'), function (v) {
+        v.autoplay = false;
+        v.loop = false;
+        v.controls = true;
+        v.pause();
+      });
+    })();
+
     /* ---------- Footer year ---------- */
     Array.prototype.forEach.call(document.querySelectorAll('[data-year]'), function (el) {
       el.textContent = new Date().getFullYear();

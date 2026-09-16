@@ -905,6 +905,23 @@ img.avatar-art{ object-fit: cover; }
   filter: drop-shadow(0 26px 44px rgba(20,20,15,.28));
 }
 
+/* Hero clip. The aspect box comes from the data so the panel reserves its
+   height before the video's metadata lands and nothing shifts under it. The
+   dark plate is what shows in that first moment, and behind a clip whose own
+   edges are dark it reads as part of the panel rather than a gap. */
+.author-media{
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-xl);
+  background: #0e0e0c;
+}
+.author-media video{
+  display: block;
+  width: 100%;
+  aspect-ratio: var(--clip-aspect, 16 / 9);
+  object-fit: cover;
+}
+
 .author-cover{
   max-width: 300px;
   margin-inline: auto;
@@ -921,8 +938,22 @@ img.avatar-art{ object-fit: cover; }
   border: 1px solid var(--line);
   border-left: 3px solid var(--orange);
   border-radius: var(--radius);
+}
+.author-book__info{ display: grid; gap: 4px; align-content: start; }
+/* With the mockup in it the panel splits in two. The art track is sized to
+   the book rather than taking an even share, so the details keep roughly the
+   measure they had when they ran the full width. */
+.author-book--split{
   display: grid;
-  gap: 4px;
+  grid-template-columns: minmax(0, 1fr) clamp(96px, 27%, 150px);
+  gap: clamp(16px, 3vw, 26px);
+  align-items: center;
+}
+.author-book__art img{
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 14px 24px rgba(20,20,15,.26));
 }
 .author-book__label{
   font-size: 10px; font-weight: 600; letter-spacing: .18em;
@@ -2273,6 +2304,10 @@ img.book__art{ object-fit: cover; }
   /* Stacked figures get a horizontal rule between them instead */
   .stat + .stat{ padding-top: 26px; border-top: 1px solid var(--line); }
   .footer-grid{ grid-template-columns: 1fr; }
+  /* Side by side, the panel leaves the details about 175px to work in and the
+     title breaks over three lines. Stack instead, book first. */
+  .author-book--split{ grid-template-columns: 1fr; gap: 18px; justify-items: start; }
+  .author-book__art{ order: -1; width: 118px; }
   .hero__stack{ --w: clamp(92px, 26vw, 132px); }
   .book3d__edge{ width: 12px; }
   .hero__badge{ padding: 10px 15px; }

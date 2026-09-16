@@ -745,7 +745,13 @@ const authors = [
       /* Retail listing. Rendered as an outbound link — new tab, rel=noopener.
          Remove buyUrl to hide the button. */
       buyUrl: 'https://www.amazon.com/dp/B0HJB2R948',
-      buyLabel: 'View on Amazon'
+      buyLabel: 'View on Amazon',
+      /* Hero clip for the author page. Silent (the file carries no audio
+         track), so it plays muted on a loop with no controls. Shown at its
+         own 16:9 rather than cropped to the column. Remove to fall back to
+         the mockup in the hero panel. */
+      video: 'assets/video/the-groom-lake-protocol.mp4',
+      videoAspect: '16 / 9'
     },
     lede: 'A conspiracy thriller built out of the gap between what was declassified and what was quietly left in the file.',
     storyHeading: 'The story behind the book',

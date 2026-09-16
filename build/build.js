@@ -1220,15 +1220,26 @@ const authorPage = (a) => {
         <span class="kicker kicker--orange">${a.role}</span>
         <h1 class="display">${a.name}</h1>
         <p class="lede" style="margin-top:18px">${a.lede}</p>
-        <div class="author-book">
-          <span class="author-book__label">The book</span>
-          <span class="author-book__title">${a.book.title}</span>
-          <span class="author-book__meta">${a.book.series} &nbsp;·&nbsp; ${a.book.genre}</span>
-          <span class="author-book__tagline">&ldquo;${a.book.tagline}&rdquo;</span>
-          ${a.book.buyUrl ? `<a class="author-book__buy" href="${a.book.buyUrl}" target="_blank" rel="noopener noreferrer">
-            ${icon('cart')}<span>${a.book.buyLabel || 'Buy the book'}</span>${icon('arrow')}
-          </a>` : ''}
-        </div>
+        ${(() => {
+          /* The mockup sits inside the book panel, which used to run the
+             full width of the column with its right half empty. The hero
+             slot it vacated goes to the clip. */
+          const mock = a.book.mockup && resolveCover(a.book.mockup);
+          return `<div class="author-book${mock ? ' author-book--split' : ''}">
+          <div class="author-book__info">
+            <span class="author-book__label">The book</span>
+            <span class="author-book__title">${a.book.title}</span>
+            <span class="author-book__meta">${a.book.series} &nbsp;·&nbsp; ${a.book.genre}</span>
+            <span class="author-book__tagline">&ldquo;${a.book.tagline}&rdquo;</span>
+            ${a.book.buyUrl ? `<a class="author-book__buy" href="${a.book.buyUrl}" target="_blank" rel="noopener noreferrer">
+              ${icon('cart')}<span>${a.book.buyLabel || 'Buy the book'}</span>${icon('arrow')}
+            </a>` : ''}
+          </div>
+          ${mock ? `<div class="author-book__art">
+            <img src="${mock}" alt="${attr(a.book.title + ' by ' + a.name)}" width="1080" height="1350" fetchpriority="high" decoding="async">
+          </div>` : ''}
+        </div>`;
+        })()}
         ${/* The buy link lives in the book panel above. The primary button
              stays on Amazo's own conversion — this is a publisher's site, and
              a solid orange CTA that sends visitors to a retailer would make
@@ -1239,14 +1250,21 @@ const authorPage = (a) => {
         </div>
       </div>
       ${(() => {
+        const clip = a.book.video && resolveCover(a.book.video);
         const mock = a.book.mockup && resolveCover(a.book.mockup);
-        return mock
-          ? `<div class="author-mockup">
-        <img src="${mock}" alt="${attr(a.book.title + ' by ' + a.name)}" width="1080" height="1350" fetchpriority="high" decoding="async">
-      </div>`
-          : `<div class="author-cover">
-        ${row ? coverArt(row, 0) : ''}
+        /* The file has no audio track, so this is decoration rather than
+           something anyone needs to hear — muted autoplay with no controls
+           is honest here. playsinline keeps iOS from going fullscreen, and
+           the aspect box means the panel never jumps once metadata lands. */
+        if (clip) return `<div class="author-media" style="--clip-aspect: ${a.book.videoAspect || '16 / 9'}">
+        <video src="${clip}" autoplay muted loop playsinline preload="auto"
+               aria-label="${attr(a.book.title + ' — trailer')}"></video>
       </div>`;
+        /* No clip: the mockup stays in the hero slot as it was. */
+        if (mock) return `<div class="author-mockup">
+        <img src="${mock}" alt="${attr(a.book.title + ' by ' + a.name)}" width="1080" height="1350" fetchpriority="high" decoding="async">
+      </div>`;
+        return `<div class="author-cover">${row ? coverArt(row, 0) : ''}</div>`;
       })()}
     </div>
   </div>
