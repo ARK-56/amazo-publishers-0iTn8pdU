@@ -554,13 +554,13 @@ const services = [
    -------------------------------------------------------------------------- */
 const home = {
   hero: {
-    title: 'Unlock your imagination with <em>Amazo Publishers</em>',
-    /* Price shown under the headline. Remove this block to hide it.
-       "label" should say what the price actually buys — a bare figure in a
-       hero invites "for what?". "was" renders struck through as a reference
-       price, so it needs to be a genuine former price, not an anchor. */
+    /* The price is part of the headline: "lead" + struck "was" + live "now"
+       render as the accent line beneath the title text. Since "was" shows
+       struck through it reads as a former price, so it needs to be one.
+       Delete the price block and the headline renders on its own. */
+    title: 'Publish your book with Amazo Publishers',
     price: {
-      label: 'Get published from',
+      lead: 'from',
       was: '$299',
       now: '$249',
       note: 'Limited-time launch price'

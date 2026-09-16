@@ -431,8 +431,9 @@ h1 em, h2 em, h3 em, .em{
   align-items: center;
 }
 .hero .kicker{ color: rgba(253,253,251,.6); }
-/* Sized so the headline lands in three lines at desktop widths — the em sits
-   on its own line, so the first clause needs to fit in roughly two. */
+/* Sized so the text lands in two lines at common desktop widths, with the
+   price taking a third — the copy column narrows again past ~1500px, where
+   it runs to four. The em rule below is for a headline with no price. */
 .hero__title{
   font-size: clamp(33px, 4.3vw, 53px);
   line-height: 1.1;
@@ -446,36 +447,25 @@ h1 em, h2 em, h3 em, .em{
   font-style: normal;
   color: var(--orange);
 }
-/* Price under the headline */
-.hero__price{
-  display: flex;
-  align-items: baseline;
-  flex-wrap: wrap;
-  gap: 6px 14px;
-  margin: 0 0 22px;
-}
-.hero__price-label{
-  font-size: 12px;
+/* The price is the headline accent, so it takes the slot the em used to:
+   its own line, orange. Sizes are in em so they ride the title clamp. */
+.hero__title-price{ display: block; margin-top: 4px; color: var(--orange); }
+.hero__title-from{
+  font-size: .34em;
   font-weight: 600;
-  letter-spacing: .18em;
+  letter-spacing: .16em;
   text-transform: uppercase;
   color: rgba(253,253,251,.6);
 }
-.hero__price-figures{ display: inline-flex; align-items: baseline; gap: 12px; }
-.hero__price-was{
-  font-size: clamp(17px, 2vw, 22px);
-  color: rgba(253,253,251,.5);
-  text-decoration-thickness: 2px;
+.hero__title-was{
+  margin-left: .12em;
+  font-size: .52em;
+  color: rgba(253,253,251,.45);
+  text-decoration-thickness: .055em;
 }
-.hero__price-now{
-  font-family: var(--serif);
-  font-size: clamp(34px, 4.4vw, 50px);
-  font-weight: 700;
-  line-height: 1;
-  color: var(--orange);
-}
+.hero__title-now{ margin-left: .06em; font-weight: 700; }
 .hero__price-note{
-  width: 100%;
+  margin: 0 0 20px;
   font-size: 12.5px;
   color: rgba(253,253,251,.55);
 }

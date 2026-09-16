@@ -713,15 +713,14 @@ const homePage = () => {
   <div class="shell hero__grid">
     <div class="hero__copy">
       <span class="kicker">Ghostwriting · Editing · Publishing</span>
-      <h1 class="hero__title">${home.hero.title}</h1>
-      ${home.hero.price ? `<p class="hero__price">
-        <span class="hero__price-label">${home.hero.price.label}</span>
-        <span class="hero__price-figures">
-          <s class="hero__price-was">${home.hero.price.was}</s>
-          <span class="hero__price-now">${home.hero.price.now}</span>
-        </span>
-        ${home.hero.price.note ? `<span class="hero__price-note">${home.hero.price.note}</span>` : ''}
-      </p>` : ''}
+      <h1 class="hero__title">${home.hero.title}${home.hero.price ? `
+        <span class="hero__title-price">
+          ${home.hero.price.lead ? `<span class="hero__title-from">${home.hero.price.lead}</span>` : ''}
+          <s class="hero__title-was">${home.hero.price.was}</s>
+          <span class="hero__title-now">${home.hero.price.now}</span>
+        </span>` : ''}</h1>
+      ${home.hero.price && home.hero.price.note
+        ? `<p class="hero__price-note">${home.hero.price.note}</p>` : ''}
       <p class="lede hero__lede">${home.hero.lede}</p>
       <p class="hero__points-label">${home.hero.pointsLabel}</p>
       <ul class="hero__points">
