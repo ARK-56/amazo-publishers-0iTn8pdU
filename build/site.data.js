@@ -49,12 +49,20 @@ const site = {
      same file. width/height are the intrinsic pixel size and are used to
      reserve space so the header does not shift while the image loads. */
   logo: {
+    /* Sizes must match each file's real pixels — they reserve the space before
+       the image loads, and a wrong ratio makes the mark jump. The two files are
+       different sizes, so the footer carries its own; the build throws if
+       either pair stops matching the file on disk. */
     src:    'assets/img/logo.png',
-    light:  'assets/img/logo-on-dark.png',
-    /* Must match the file's real pixel size — these reserve space before the
-       image loads, and a wrong ratio makes the header jump. */
     width:  1000,
     height: 233,
+
+    /* Footer knockout: the same mark with the black wordmark and tagline
+       removed, so it reads on the dark ground with nothing behind it. */
+    light:       'assets/img/logo-on-dark.png',
+    lightWidth:  981,
+    lightHeight: 225,
+
     alt:    'Amazo Publishers'
   },
 

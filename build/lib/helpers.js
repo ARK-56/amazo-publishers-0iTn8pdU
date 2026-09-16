@@ -4,7 +4,39 @@
    text escaping, and the service lookups the nav and grids are built from.
    ========================================================================== */
 
+const fs = require('fs');
+const path = require('path');
 const { site, icons, services } = require('../site.data.js');
+
+const ROOT = path.join(__dirname, '..', '..');
+
+/* The declared logo size reserves space before the file loads, so a stale
+   number shifts the header or footer as the image arrives. Logo files get
+   swapped often here — read the real size out of the PNG and fail the build
+   rather than let the two drift apart silently. Non-PNGs are skipped: an SVG
+   scales to whatever the CSS gives it. */
+const assertLogoSize = (file, w, h_, label) => {
+  const full = path.join(ROOT, file);
+  if (!/.png$/i.test(file) || !fs.existsSync(full)) return;
+  const b = fs.readFileSync(full);
+  if (b.slice(0, 8).toString('hex') !== '89504e470d0a1a0a') return;
+  const real = { w: b.readUInt32BE(16), h: b.readUInt32BE(20) };
+  if (real.w !== w || real.h !== h_) {
+    throw new Error(
+      'site.logo ' + label + ' says ' + w + 'x' + h_ + ' but ' + file + ' is ' +
+      real.w + 'x' + real.h + '. Update the numbers in site.data.js.'
+    );
+  }
+};
+assertLogoSize(site.logo.src, site.logo.width, site.logo.height, 'width/height');
+if (site.logo.light) {
+  assertLogoSize(
+    site.logo.light,
+    site.logo.lightWidth || site.logo.width,
+    site.logo.lightHeight || site.logo.height,
+    'lightWidth/lightHeight'
+  );
+}
 
 /* ---------- markup helpers ---------- */
 const icon = (name, cls) =>
@@ -53,14 +85,17 @@ const extraServices = ['audio-book', 'website-content-writing', 'book-video-trai
    before the image arrives. */
 const wordmark = (cls, variant) => {
   const l = site.logo;
-  const src = variant === 'light' && l.light ? l.light : l.src;
+  const useLight = variant === 'light' && !!l.light;
+  const src = useLight ? l.light : l.src;
+  const w = useLight && l.lightWidth ? l.lightWidth : l.width;
+  const h = useLight && l.lightHeight ? l.lightHeight : l.height;
   const lazy = variant === 'light'
     ? ' loading="lazy" decoding="async"'
     : ' fetchpriority="high" decoding="async"';
 
   return `
 <a class="wordmark${cls ? ` ${cls}` : ''}" href="index.html" aria-label="${site.name} — home">
-  <img class="wordmark__img" src="${src}" alt="${attr(l.alt || site.name)}" width="${l.width}" height="${l.height}"${lazy}>
+  <img class="wordmark__img" src="${src}" alt="${attr(l.alt || site.name)}" width="${w}" height="${h}"${lazy}>
 </a>`;
 };
 
