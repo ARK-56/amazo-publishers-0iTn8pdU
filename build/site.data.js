@@ -29,6 +29,19 @@ const site = {
      POST entirely and always hand off to the mail client. */
   formEndpoint: '/api/contact',
 
+  /* ---- Analytics and advertising tags ----
+     Both load third-party scripts that set cookies and report the visit to
+     Google and Meta. They fire on every page for every visitor, with no
+     consent gate in front of them — if the site takes visitors in the UK or
+     EU that is the part to sort out, and privacy.html should say what these
+     collect before it goes live there.
+
+     Blank either ID to drop that tag from the build entirely. */
+  analytics: {
+    ga4: 'G-V723D5DBRV',           // Google Analytics 4 measurement ID
+    facebookPixel: '999808529451496'
+  },
+
   /* ---- LOGO — currently placeholder art in assets/img/ ----
      Drop the real files in and point these at them. Any format works
      (.svg, .png, .webp). `src` sits on the light header, `light` on the
@@ -822,7 +835,13 @@ const legal = [
       ['h2', 'Your rights'],
       ['p', 'You can ask to see the personal data we hold about you, ask us to correct it, or ask us to delete it. Write to hello@amazopublishers.com and we will respond within thirty days.'],
       ['h2', 'Cookies and analytics'],
-      ['p', 'This site uses only what is needed to make pages work and to count visits in aggregate. We do not run advertising trackers or build profiles of visitors.']
+      /* This has to match what the pages actually load. The Meta pixel is an
+         advertising tracker and it does feed ad profiles, so the old wording
+         — "we do not run advertising trackers or build profiles of visitors"
+         — stopped being true the moment it was added. Keep this paragraph in
+         step with site.analytics. */
+      ['p', 'We use Google Analytics to understand how the site is used, and the Meta (Facebook) pixel to measure our advertising. Both set cookies and report your visit to those companies, who may use it to build an advertising profile of you. Neither one receives your manuscript or anything you type into a form.'],
+      ['p', 'You can stop both with any standard tracker-blocking extension, or by using your browser’s private mode. Google explains its own opt-out at tools.google.com/dlpage/gaoptout, and your Meta ad preferences are at facebook.com/adpreferences.']
     ]
   },
   {

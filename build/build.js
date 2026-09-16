@@ -66,6 +66,64 @@ const popup = () => {
 };
 
 /* ---------- page shell ---------- */
+/* ---------- analytics ----------
+   Google Analytics and the Meta pixel, verbatim from what each provides bar
+   two changes: the IDs come from site.data.js so they live in one place, and
+   the pixel's noscript URL is written on one line with an encoded ampersand
+   rather than the raw newline Meta's own snippet carries.
+
+   Both are dropped from the build when their ID is blank, so there is never a
+   half-initialised tag reporting to nowhere. preconnect goes first — these
+   are the only third-party origins on the page besides the fonts. */
+const analyticsHead = () => {
+  const { ga4, facebookPixel } = site.analytics || {};
+  if (!ga4 && !facebookPixel) return '';
+
+  const preconnect = [
+    ga4 && '<link rel="preconnect" href="https://www.googletagmanager.com">',
+    facebookPixel && '<link rel="preconnect" href="https://connect.facebook.net">'
+  ].filter(Boolean).join('\n');
+
+  const google = !ga4 ? '' : `
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=${ga4}"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', '${ga4}');
+</script>`;
+
+  const meta = !facebookPixel ? '' : `
+<!-- Facebook Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window,document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '${facebookPixel}');
+fbq('track', 'PageView');
+</script>
+<!-- End Facebook Pixel Code -->`;
+
+  return preconnect + google + meta;
+};
+
+/* The pixel's fallback image. It belongs in the body, and only earns its
+   place when scripting is off — which is also the one case where the script
+   above never ran. */
+const analyticsNoScript = () => {
+  const id = (site.analytics || {}).facebookPixel;
+  if (!id) return '';
+  return `<noscript><img height="1" width="1" style="display:none" alt=""
+  src="https://www.facebook.com/tr?id=${id}&amp;ev=PageView&amp;noscript=1"></noscript>`;
+};
+
 const layout = ({ title, desc, current, body }) => `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -83,8 +141,10 @@ const layout = ({ title, desc, current, body }) => `<!DOCTYPE html>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,500;0,6..72,600;1,6..72,500;1,6..72,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="icon" href="assets/img/favicon.ico" sizes="any">
 <link rel="stylesheet" href="assets/css/styles.css">
+${analyticsHead()}
 </head>
 <body>
+${analyticsNoScript()}
 <a class="skip-link" href="#main">Skip to content</a>
 ${popup()}
 ${header(current)}
