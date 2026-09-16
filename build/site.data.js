@@ -558,7 +558,9 @@ const home = {
        render as the accent line beneath the title text. Since "was" shows
        struck through it reads as a former price, so it needs to be one.
        Delete the price block and the headline renders on its own. */
-    title: 'Publish your book with Amazo Publishers',
+    /* Chosen to split into two near-equal lines at the hero's measure —
+       "Publish your book with Amazo Publishers" could only break 430/546. */
+    title: 'Your book, published by Amazo Publishers',
     price: {
       lead: 'from',
       was: '$299',

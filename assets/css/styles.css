@@ -431,9 +431,10 @@ h1 em, h2 em, h3 em, .em{
   align-items: center;
 }
 .hero .kicker{ color: rgba(253,253,251,.6); }
-/* Sized so the text lands in two lines at common desktop widths, with the
-   price taking a third — the copy column narrows again past ~1500px, where
-   it runs to four. The em rule below is for a headline with no price. */
+/* Two lines of text plus the price line at desktop. balance counts the price
+   line too, so a starved column used to chop the text into three short ones —
+   capping the art column is what keeps this to two. The em rule below applies
+   to a headline with no price block. */
 .hero__title{
   font-size: clamp(33px, 4.3vw, 53px);
   line-height: 1.1;
@@ -449,7 +450,14 @@ h1 em, h2 em, h3 em, .em{
 }
 /* The price is the headline accent, so it takes the slot the em used to:
    its own line, orange. Sizes are in em so they ride the title clamp. */
-.hero__title-price{ display: block; margin-top: 4px; color: var(--orange); }
+.hero__title-price{
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0 .2em;
+  margin-top: 6px;
+  color: var(--orange);
+}
 .hero__title-from{
   font-size: .34em;
   font-weight: 600;
@@ -458,12 +466,11 @@ h1 em, h2 em, h3 em, .em{
   color: rgba(253,253,251,.6);
 }
 .hero__title-was{
-  margin-left: .12em;
   font-size: .52em;
   color: rgba(253,253,251,.45);
   text-decoration-thickness: .055em;
 }
-.hero__title-now{ margin-left: .06em; font-weight: 700; }
+.hero__title-now{ font-weight: 700; }
 .hero__price-note{
   margin: 0 0 20px;
   font-size: 12.5px;
@@ -509,7 +516,10 @@ h1 em, h2 em, h3 em, .em{
 }
 
 .hero__stack{
-  --w: clamp(112px, 14.5vw, 208px);   /* one book's width; the row is ~2.5x this */
+  /* One book's width; the row is ~2.5x this. Capped at the value 14.5vw
+     reaches at 1280px, where .shell stops growing — past that the art would
+     otherwise keep widening and starve the headline's column. */
+  --w: clamp(112px, 14.5vw, 186px);
   position: relative;
   z-index: 1;
   display: flex;
@@ -2248,6 +2258,11 @@ img.book__art{ object-fit: cover; }
   .genres{ grid-template-columns: repeat(2, 1fr); }
   .stats-band .shell{ grid-template-columns: 1fr; }
 }
+
+/* Below ~360px the 33px floor leaves about nine characters to a line and the
+   headline breaks into three ragged ones. 31px puts it back into two even
+   lines; the floor is left alone above this so 375px keeps its size. */
+@media (max-width: 359px){ .hero__title{ font-size: 31px; } }
 
 @media (max-width: 620px){
   .grid--3, .grid--4, .grid--2, .steps, .books, .field-row{
