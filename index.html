@@ -174,7 +174,10 @@
       </h2>
       <p class="modal__offer">Free sample edit</p>
       <p class="modal__sub">Get your name on the cover of a <em>properly made book</em></p>
-      <form class="modal__form" data-mailto-form="hello@amazopublishers.com" data-subject="Enquiry from the website popup">
+      <form class="modal__form" data-mailto-form="hello@amazopublishers.com" data-endpoint="/api/contact" data-source="the pop-up" data-subject="Enquiry from the website popup">
+        <div class="hp" aria-hidden="true">
+          <label>Do not fill this in<input type="text" name="company" tabindex="-1" autocomplete="off"></label>
+        </div>
         <input type="text" name="name" required aria-label="Full name" autocomplete="name" placeholder="Full name *">
         <div class="modal__row">
           <input type="tel"   name="phone"          aria-label="Phone number" autocomplete="tel"   placeholder="Phone">
@@ -1260,7 +1263,10 @@
         <h2 class="h2">Tell your story to the <em>world</em></h2>
         <p class="lede">Leave us three details and we will come back with an honest read on your book — scope, timeline and cost, before you commit to anything.</p>
       </div>
-      <form class="lead-form" data-mailto-form="hello@amazopublishers.com" data-subject="Quick enquiry from the website">
+      <form class="lead-form" data-mailto-form="hello@amazopublishers.com" data-endpoint="/api/contact" data-source="the homepage band" data-subject="Quick enquiry from the website">
+        <div class="hp" aria-hidden="true">
+          <label>Do not fill this in<input type="text" name="company" tabindex="-1" autocomplete="off"></label>
+        </div>
         <div class="lead-form__row">
           <input type="text"  name="name"  required aria-label="Your name"     autocomplete="name"  placeholder="Your name">
           <input type="email" name="email" required aria-label="Email address" autocomplete="email" placeholder="Email address">

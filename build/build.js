@@ -23,6 +23,13 @@ const ROOT = path.join(__dirname, '..');
 /* ---------- entry popup ----------
    Rendered inert (hidden, aria-hidden) and only opened by main.js, so a
    visitor without JS never gets a modal they cannot dismiss. */
+/* A field positioned off-screen and hidden from assistive tech. Nobody
+   sees it, so anything that arrives with it filled came from a script — the
+   endpoint answers 200 and sends nothing. */
+const honeypot = `<div class="hp" aria-hidden="true">
+          <label>Do not fill this in<input type="text" name="company" tabindex="-1" autocomplete="off"></label>
+        </div>`;
+
 const popup = () => {
   const p = site.popup;
   if (!p || !p.enabled) return '';
@@ -41,7 +48,8 @@ const popup = () => {
       </h2>
       ${p.offer ? `<p class="modal__offer">${p.offer}</p>` : ''}
       <p class="modal__sub">${p.sub}</p>
-      <form class="modal__form" data-mailto-form="${site.email}" data-subject="Enquiry from the website popup">
+      <form class="modal__form" data-mailto-form="${site.email}" data-endpoint="${site.formEndpoint}" data-source="the pop-up" data-subject="Enquiry from the website popup">
+        ${honeypot}
         <input type="text" name="name" required aria-label="Full name" autocomplete="name" placeholder="Full name *">
         <div class="modal__row">
           <input type="tel"   name="phone"          aria-label="Phone number" autocomplete="tel"   placeholder="Phone">
@@ -179,7 +187,8 @@ const leadBand = (title, lede) => `
         <h2 class="h2">${title}</h2>
         <p class="lede">${lede}</p>
       </div>
-      <form class="lead-form" data-mailto-form="${site.email}" data-subject="Quick enquiry from the website">
+      <form class="lead-form" data-mailto-form="${site.email}" data-endpoint="${site.formEndpoint}" data-source="the homepage band" data-subject="Quick enquiry from the website">
+        ${honeypot}
         <div class="lead-form__row">
           <input type="text"  name="name"  required aria-label="Your name"     autocomplete="name"  placeholder="Your name">
           <input type="email" name="email" required aria-label="Email address" autocomplete="email" placeholder="Email address">
@@ -1090,7 +1099,8 @@ const contactPage = () => {
 <section class="section">
   <div class="shell layout-aside">
 
-    <form class="form-card" data-mailto-form="${site.email}" data-subject="Website enquiry — Amazo Publishers">
+    <form class="form-card" data-mailto-form="${site.email}" data-endpoint="${site.formEndpoint}" data-source="the contact page" data-subject="Website enquiry — Amazo Publishers">
+      ${honeypot}
       <h2 class="h3" style="margin-bottom:24px">Start your project</h2>
 
       <div class="field-row">

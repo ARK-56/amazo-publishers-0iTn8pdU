@@ -1949,6 +1949,38 @@ img.book__art{ object-fit: cover; }
   font-size: 14px; color: var(--orange-deep); display: none;
 }
 .form-status.is-visible{ display: block; }
+/* Success and failure need to be told apart without relying on colour alone,
+   so each carries a leading mark as well. The status element already has
+   role="status", so the text is announced either way. */
+.form-status.is-success{
+  background: rgba(46,125,82,.10);
+  border-color: rgba(46,125,82,.34);
+  color: #1F6B45;
+}
+.form-status.is-error{
+  background: rgba(176,58,46,.09);
+  border-color: rgba(176,58,46,.32);
+  color: #9B3226;
+}
+.form-status.is-success::before{ content: "✓ "; font-weight: 700; }
+.form-status.is-error::before{ content: "! "; font-weight: 700; }
+/* The dark bands set their own palette further up, so the state variants
+   need a matching pair there to win. */
+.modal .form-status.is-success, .lead-band .form-status.is-success{
+  background: rgba(120,200,150,.16); border-color: rgba(120,200,150,.38); color: #BFE9CE;
+}
+.modal .form-status.is-error, .lead-band .form-status.is-error{
+  background: rgba(230,120,105,.16); border-color: rgba(230,120,105,.38); color: #F6C3BA;
+}
+
+/* Honeypot: off-screen rather than display:none, which some bots skip. */
+.hp{
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
 
 /* ---------- Page hero (inner pages) ---------- */
 .page-hero{

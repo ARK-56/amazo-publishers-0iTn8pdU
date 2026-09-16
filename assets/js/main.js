@@ -309,42 +309,120 @@
     }
 
     /* ---------- Contact / lead forms ----------
-       No backend is wired up yet. The form validates, then hands off to the
-       mail client so nothing is silently dropped. Replace this handler with a
-       POST to your form endpoint (Formspree, Netlify Forms, your own API). */
+       The forms POST to data-endpoint, which sends through Resend. Two things
+       make that fall back rather than fail:
+
+         - the endpoint is not deployed yet (a static host 404s the path), or
+         - it is deployed but RESEND_API_KEY is not set, and answers 503.
+
+       Either way the mail client opens as it did before, so the site keeps
+       collecting enquiries throughout the switch-over. A 4xx other than 404
+       is the visitor's own input coming back and is shown as written. */
+    var setStatus = function (form, text, kind) {
+      var el = form.querySelector('.form-status');
+      if (!el) return;
+      el.textContent = text;
+      el.classList.remove('is-error', 'is-success');
+      if (kind) el.classList.add('is-' + kind);
+      el.classList.add('is-visible');
+    };
+
+    var mailtoHandoff = function (form) {
+      var data = new FormData(form);
+      var get = function (k) { return (data.get(k) || '').toString().trim(); };
+
+      /* The short lead band has no service or message field, so drop any
+         row the form did not actually collect rather than mailing blanks. */
+      var lines = [
+        ['Name', get('name')],
+        ['Email', get('email')],
+        ['Phone', get('phone')],
+        ['Service', get('service')]
+      ].filter(function (row) { return row[1]; })
+       .map(function (row) { return row[0] + ': ' + row[1]; });
+
+      if (get('message')) lines.push('', get('message'));
+      lines = lines.join('\n');
+
+      var to = form.getAttribute('data-mailto-form');
+      var subject = form.getAttribute('data-subject') || 'Website enquiry';
+
+      setStatus(form, 'Opening your email app to send this enquiry to ' + to + '…');
+
+      /* If no mail client picks the link up, nothing happens and the page
+         never unloads — so say so rather than leaving that message standing
+         as though it were true. The visitor still has the address and every
+         word they typed. */
+      var handedOff = false;
+      window.addEventListener('pagehide', function () { handedOff = true; }, { once: true });
+      window.setTimeout(function () {
+        if (handedOff || document.visibilityState === 'hidden') return;
+        setStatus(form, 'We could not open an email app on this device. Please send your' +
+          ' message to ' + to + ' and we will pick it up from there.', 'error');
+      }, 2500);
+
+      window.location.href = 'mailto:' + to +
+        '?subject=' + encodeURIComponent(subject) +
+        '&body=' + encodeURIComponent(lines);
+    };
+
     Array.prototype.forEach.call(document.querySelectorAll('[data-mailto-form]'), function (form) {
       form.addEventListener('submit', function (e) {
         e.preventDefault();
         if (!form.reportValidity()) return;
 
+        var endpoint = form.getAttribute('data-endpoint');
+        if (!endpoint) { mailtoHandoff(form); return; }
+
         var data = new FormData(form);
         var get = function (k) { return (data.get(k) || '').toString().trim(); };
+        var payload = {
+          name: get('name'),
+          email: get('email'),
+          phone: get('phone'),
+          service: get('service'),
+          message: get('message'),
+          company: get('company'),
+          source: form.getAttribute('data-source') || 'the website'
+        };
 
-        /* The short lead band has no service or message field, so drop any
-           row the form did not actually collect rather than mailing blanks. */
-        var lines = [
-          ['Name', get('name')],
-          ['Email', get('email')],
-          ['Phone', get('phone')],
-          ['Service', get('service')]
-        ].filter(function (row) { return row[1]; })
-         .map(function (row) { return row[0] + ': ' + row[1]; });
+        var submit = form.querySelector('button[type=submit]');
+        if (submit) submit.disabled = true;
+        setStatus(form, 'Sending…');
 
-        if (get('message')) lines.push('', get('message'));
-        lines = lines.join('\n');
-
-        var to = form.getAttribute('data-mailto-form');
-        var subject = form.getAttribute('data-subject') || 'Website enquiry';
-
-        var status = form.querySelector('.form-status');
-        if (status) {
-          status.textContent = 'Opening your email app to send this enquiry to ' + to + '…';
-          status.classList.add('is-visible');
-        }
-
-        window.location.href = 'mailto:' + to +
-          '?subject=' + encodeURIComponent(subject) +
-          '&body=' + encodeURIComponent(lines);
+        window.fetch(endpoint, {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify(payload)
+        }).then(function (res) {
+          return res.json().catch(function () { return {}; }).then(function (body) {
+            return { status: res.status, ok: res.ok, body: body };
+          });
+        }).then(function (r) {
+          /* A bare 200 is not proof of anything. A static host with no
+             function runtime serves api/contact.js as a file and answers 200
+             with its source, which would otherwise be read as a success and
+             the visitor told their enquiry was sent. Only our own
+             {"ok":true} counts. */
+          if (r.ok && r.body && r.body.ok === true) {
+            form.reset();
+            setStatus(form, 'Thank you — your enquiry is on its way. We reply within one business day.', 'success');
+            return;
+          }
+          /* 404: not deployed. 503: deployed, no key yet. Both mean the mail
+             client is still the route through. */
+          if (r.status === 404 || r.status === 503) { mailtoHandoff(form); return; }
+          if (r.status >= 400 && r.status < 500 && r.body && r.body.error) {
+            setStatus(form, r.body.error, 'error');
+            return;
+          }
+          mailtoHandoff(form);
+        }).catch(function () {
+          /* Offline, blocked, or no endpoint at all. */
+          mailtoHandoff(form);
+        }).then(function () {
+          if (submit) submit.disabled = false;
+        });
       });
     });
 

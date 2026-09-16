@@ -10,6 +10,12 @@ desktop.ini
 node_modules/
 npm-debug.log*
 
+# Secrets. The Resend key lives here and must never be committed —
+# .env.example carries the shape, with the values left blank.
+.env
+.env.*
+!.env.example
+
 # The generated .html files at the repo root ARE committed on purpose —
 # they are the deployable artifact, and most static hosts serve them
 # straight from the repository root. Regenerate with: node build/build.js

@@ -19,6 +19,16 @@ const site = {
 
   url: 'https://amazopublishers.com',
 
+  /* ---- Where the forms POST ----
+     The handler in api/ takes it from here and sends through Resend. It needs
+     RESEND_API_KEY in the environment — see .env.example. Nothing is sent
+     until that key exists; the forms fall back to the mail-client handoff.
+
+     Netlify serves functions from /.netlify/functions/contact instead, so
+     change this line rather than the form markup. Set it to '' to skip the
+     POST entirely and always hand off to the mail client. */
+  formEndpoint: '/api/contact',
+
   /* ---- LOGO — currently placeholder art in assets/img/ ----
      Drop the real files in and point these at them. Any format works
      (.svg, .png, .webp). `src` sits on the light header, `light` on the
