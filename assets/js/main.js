@@ -108,6 +108,50 @@
       if (!e.target.closest('.nav__item--has-panel')) closeAll(null);
     });
 
+    /* ---------- Mega menu tabs ----------
+       The panel ships with the first category shown and the rest marked
+       hidden, so the menu is complete and readable with no JS at all. This
+       only adds the switching: pointer devices swap on hover so the list
+       follows the cursor, everything swaps on click, and the arrow keys walk
+       the rail the way a tablist is expected to. */
+    Array.prototype.forEach.call(document.querySelectorAll('.mega'), function (mega) {
+      var tabs = Array.prototype.slice.call(mega.querySelectorAll('.mega__tab'));
+      var panels = Array.prototype.slice.call(mega.querySelectorAll('.mega__panel'));
+      if (tabs.length < 2) return;
+
+      var show = function (i, focusTab) {
+        tabs.forEach(function (t, n) {
+          var on = n === i;
+          t.classList.toggle('is-active', on);
+          t.setAttribute('aria-selected', String(on));
+          t.tabIndex = on ? 0 : -1;
+        });
+        panels.forEach(function (p, n) {
+          p.classList.toggle('is-active', n === i);
+          if (n === i) p.removeAttribute('hidden'); else p.setAttribute('hidden', '');
+        });
+        if (focusTab) tabs[i].focus();
+      };
+
+      tabs.forEach(function (tab, i) {
+        tab.addEventListener('click', function (e) { e.preventDefault(); show(i); });
+        tab.addEventListener('mouseenter', function () { if (!isMobile()) show(i); });
+        tab.addEventListener('focus', function () { show(i); });
+        tab.addEventListener('keydown', function (e) {
+          var step = e.key === 'ArrowDown' || e.key === 'ArrowRight' ? 1
+                   : e.key === 'ArrowUp' || e.key === 'ArrowLeft' ? -1 : 0;
+          if (!step) return;
+          e.preventDefault();
+          show((i + step + tabs.length) % tabs.length, true);
+        });
+      });
+
+      /* Reopening the menu should not leave whichever category the cursor
+         last brushed past still showing. */
+      var item = mega.closest('.nav__item');
+      if (item) item.addEventListener('mouseleave', function () { if (!isMobile()) show(0); });
+    });
+
     document.addEventListener('keydown', function (e) {
       if (e.key !== 'Escape') return;
       closeAll(null);

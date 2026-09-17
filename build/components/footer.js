@@ -103,11 +103,11 @@ const footer = () => {
     <div class="footer-bar">
       <p>&copy; <span data-year>2026</span> ${site.name}. All rights reserved.</p>
       <ul>
-        <li><a href="about.html">About</a></li>
-        <li><a href="contact.html">Contact</a></li>
-        <li><a href="terms.html">Terms &amp; Conditions</a></li>
-        <li><a href="privacy.html">Privacy Policy</a></li>
-        <li><a href="refund-policy.html">Refund Policy</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/contact">Contact</a></li>
+        <li><a href="/terms">Terms &amp; Conditions</a></li>
+        <li><a href="/privacy">Privacy Policy</a></li>
+        <li><a href="/refund-policy">Refund Policy</a></li>
       </ul>
     </div>
   </div>

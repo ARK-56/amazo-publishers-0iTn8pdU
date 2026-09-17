@@ -16,6 +16,6 @@ npm-debug.log*
 .env.*
 !.env.example
 
-# The generated .html files at the repo root ARE committed on purpose —
-# they are the deployable artifact, and most static hosts serve them
-# straight from the repository root. Regenerate with: node build/build.js
+# The generated pages ARE committed on purpose — they are the deployable
+# artifact. Each one is <slug>/index.html so its URL carries no extension on
+# any static host, with index.html at the root. Regenerate: node build/build.js

@@ -1,7 +1,7 @@
 /* ==========================================================================
    Amazo Publishers — static site generator.
    Usage:  node build/build.js
-   Writes flat .html files into the project root so the site can be opened
+   Writes each page as <slug>/index.html, so every URL carries no
    directly from disk or dropped onto any static host.
    ========================================================================== */
 
@@ -139,8 +139,8 @@ const layout = ({ title, desc, current, body }) => `<!DOCTYPE html>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,500;0,6..72,600;1,6..72,500;1,6..72,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="icon" href="assets/img/favicon.ico" sizes="any">
-<link rel="stylesheet" href="assets/css/styles.css">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+<link rel="stylesheet" href="/assets/css/styles.css">
 ${analyticsHead()}
 </head>
 <body>
@@ -153,7 +153,7 @@ ${body}
 </main>
 ${footer()}
 <button class="to-top" type="button" aria-label="Back to top">${icon('arrow')}</button>
-<script src="assets/js/main.js"></script>
+<script src="/assets/js/main.js"></script>
 </body>
 </html>
 `;
@@ -169,7 +169,7 @@ const portrait = (name, seed, photo) => {
     : avatarArt(name, seed);
 };
 const byAuthorName = Object.fromEntries(authors.map((a) => [a.name, a]));
-const authorHref = (name) => (byAuthorName[name] ? `author-${byAuthorName[name].slug}.html` : '');
+const authorHref = (name) => (byAuthorName[name] ? `/author-${byAuthorName[name].slug}` : '');
 
 /* Retail link for a title, read from its author record so the shelf tile and
    the author page cannot disagree about where the book is sold. */
@@ -229,7 +229,7 @@ const ctaBand = (title, lede, seed = 0) => {
     <h2 class="h2">${title}</h2>
     <p class="lede">${lede}</p>
     <div class="btn-row" style="justify-content:center">
-      <a class="btn btn--solid" href="contact.html">Get Started ${icon('arrow')}</a>
+      <a class="btn btn--solid" href="/contact">Get Started ${icon('arrow')}</a>
       <a class="btn btn--light" href="mailto:${site.email}">Email us</a>
     </div>
   </div>
@@ -303,11 +303,13 @@ const COVER_EXTS = ['.jpg', '.jpeg', '.png', '.webp', '.avif'];
 
 const resolveCover = (base) => {
   if (!base) return null;
+  /* Probing happens against the path as written in the data; what comes
+     back is a URL, so it is returned root-relative like every other link. */
   if (path.extname(base)) {
-    return fs.existsSync(path.join(ROOT, base)) ? base : null;
+    return fs.existsSync(path.join(ROOT, base)) ? '/' + base : null;
   }
   for (const ext of COVER_EXTS) {
-    if (fs.existsSync(path.join(ROOT, base + ext))) return base + ext;
+    if (fs.existsSync(path.join(ROOT, base + ext))) return '/' + base + ext;
   }
   return null;
 };
@@ -664,7 +666,7 @@ const featuredQuotes = () => authors
     role: a.role,
     seed: a.avatarSeed || 0,
     photo: a.photo,
-    href: `author-${a.slug}.html`,
+    href: `/author-${a.slug}`,
     book: home.books.find((b) => b[2] === a.name)
   }));
 
@@ -808,7 +810,7 @@ const homePage = () => {
         ${home.hero.points.map((p) => `<li>${icon('check')}<span>${p}</span></li>`).join('\n        ')}
       </ul>
       <div class="btn-row">
-        <a class="btn btn--solid" href="contact.html">Get Started ${icon('arrow')}</a>
+        <a class="btn btn--solid" href="/contact">Get Started ${icon('arrow')}</a>
         <a class="btn btn--light" href="#services">See our services</a>
       </div>
     </div>
@@ -833,8 +835,8 @@ const homePage = () => {
       <h2 class="h2">${home.about.title}</h2>
       ${home.about.body.map((p) => `<p class="lede">${p}</p>`).join('\n      ')}
       <div class="btn-row" style="margin-top:30px">
-        <a class="btn btn--solid" href="contact.html">Get Started ${icon('arrow')}</a>
-        <a class="btn" href="about.html">More about us</a>
+        <a class="btn btn--solid" href="/contact">Get Started ${icon('arrow')}</a>
+        <a class="btn" href="/about">More about us</a>
       </div>
     </div>
   </div>
@@ -965,7 +967,7 @@ ${leadBand('Tell your story to the <em>world</em>', 'Leave us three details and 
   return layout({
     title: `${site.name} — Ghostwriting, Book Editing & Publishing Services`,
     desc: 'Amazo Publishers helps authors write, edit, design and publish their books — ghostwriting, editing, cover design, formatting, Amazon publishing, audiobooks and marketing. You keep every right.',
-    current: 'index.html',
+    current: '/',
     body
   });
 };
@@ -979,14 +981,14 @@ const servicePage = (s) => {
   const body = `
 <section class="page-hero">
   <div class="shell">
-    <p class="crumbs"><a href="index.html">Home</a> &nbsp;/&nbsp; <a href="index.html#services">Services</a> &nbsp;/&nbsp; <span>${s.title}</span></p>
+    <p class="crumbs"><a href="/">Home</a> &nbsp;/&nbsp; <a href="/#services">Services</a> &nbsp;/&nbsp; <span>${s.title}</span></p>
     <div class="page-hero__grid">
       <div>
         <span class="kicker kicker--orange">${s.title}</span>
         <h1 class="display">${s.heroTitle}</h1>
         <p class="lede" style="margin-top:18px">${s.lede}</p>
         <div class="btn-row" style="margin-top:30px">
-          <a class="btn btn--solid" href="contact.html?service=${encodeURIComponent(s.title)}">Get a quote ${icon('arrow')}</a>
+          <a class="btn btn--solid" href="/contact?service=${encodeURIComponent(s.title)}">Get a quote ${icon('arrow')}</a>
           <a class="btn" href="mailto:${site.email}">Ask a question</a>
         </div>
       </div>
@@ -1020,7 +1022,7 @@ const servicePage = (s) => {
       <div class="aside-card">
         <h3>Talk to us about ${s.title.toLowerCase()}</h3>
         <p>Tell us where the book is now. We will tell you what it needs and what that costs — before you commit to anything.</p>
-        <a class="btn btn--solid" href="contact.html?service=${encodeURIComponent(s.title)}" style="width:100%">Get Started</a>
+        <a class="btn btn--solid" href="/contact?service=${encodeURIComponent(s.title)}" style="width:100%">Get Started</a>
       </div>
 
       <div class="aside-card" style="margin-top:20px">
@@ -1065,7 +1067,7 @@ const aboutPage = () => {
   const body = `
 <section class="page-hero">
   <div class="shell">
-    <p class="crumbs"><a href="index.html">Home</a> &nbsp;/&nbsp; <span>About</span></p>
+    <p class="crumbs"><a href="/">Home</a> &nbsp;/&nbsp; <span>About</span></p>
     <div class="page-hero__grid">
       <div>
         <span class="kicker kicker--orange">About us</span>
@@ -1100,7 +1102,7 @@ ${/* The six stages are set out in full on the homepage; here they are a
     </div>
     <ol class="stage-list reveal">${stages}
     </ol>
-    <p class="stage-list__note"><a href="index.html#services">See how each stage works ${icon('arrow')}</a></p>
+    <p class="stage-list__note"><a href="/#services">See how each stage works ${icon('arrow')}</a></p>
   </div>
 </section>
 
@@ -1137,7 +1139,7 @@ ${ctaBand('Let’s talk about your <em>book</em>', 'Send us the manuscript, the 
   return layout({
     title: `About — ${site.name}`,
     desc: 'Amazo Publishers is a team of ghostwriters, editors, designers and publishing specialists helping authors produce books that are properly made and genuinely findable.',
-    current: 'about.html',
+    current: '/about',
     body
   });
 };
@@ -1159,7 +1161,7 @@ const contactPage = () => {
   const body = `
 <section class="page-hero">
   <div class="shell">
-    <p class="crumbs"><a href="index.html">Home</a> &nbsp;/&nbsp; <span>Contact</span></p>
+    <p class="crumbs"><a href="/">Home</a> &nbsp;/&nbsp; <span>Contact</span></p>
     <div style="max-width:720px">
       <span class="kicker kicker--orange">Contact</span>
       <h1 class="display">Tell us what you are <em>working on</em></h1>
@@ -1208,7 +1210,7 @@ const contactPage = () => {
       <button class="btn btn--solid" type="submit" style="width:100%">Send enquiry ${icon('arrow')}</button>
 
       <div class="form-status" role="status"></div>
-      <p class="form-note">We reply to every enquiry. Your manuscript and your details stay confidential — see our <a href="privacy.html" style="color:var(--orange-deep)">privacy policy</a>.</p>
+      <p class="form-note">We reply to every enquiry. Your manuscript and your details stay confidential — see our <a href="/privacy" style="color:var(--orange-deep)">privacy policy</a>.</p>
     </form>
 
     <aside class="sticky-aside">
@@ -1237,7 +1239,7 @@ const contactPage = () => {
   return layout({
     title: `Contact — ${site.name}`,
     desc: `Talk to Amazo Publishers about ghostwriting, editing, cover design, formatting, publishing or marketing your book. Email ${site.email}.`,
-    current: 'contact.html',
+    current: '/contact',
     body
   });
 };
@@ -1253,7 +1255,7 @@ const legalPage = (p) => {
   const body = `
 <section class="page-hero">
   <div class="shell">
-    <p class="crumbs"><a href="index.html">Home</a> &nbsp;/&nbsp; <span>${p.title}</span></p>
+    <p class="crumbs"><a href="/">Home</a> &nbsp;/&nbsp; <span>${p.title}</span></p>
     <div style="max-width:720px">
       <h1 class="display">${p.title}</h1>
       <p class="lede" style="margin-top:18px">${p.lede}</p>
@@ -1274,7 +1276,7 @@ const legalPage = (p) => {
   return layout({
     title: `${p.title} — ${site.name}`,
     desc: attr(p.lede),
-    current: `${p.slug}.html`,
+    current: `/${p.slug}`,
     body
   });
 };
@@ -1296,7 +1298,7 @@ const authorPage = (a) => {
   const body = `
 <section class="page-hero">
   <div class="shell">
-    <p class="crumbs"><a href="index.html">Home</a> &nbsp;/&nbsp; <a href="index.html#shelf">Our shelf</a> &nbsp;/&nbsp; <span>${a.name}</span></p>
+    <p class="crumbs"><a href="/">Home</a> &nbsp;/&nbsp; <a href="/#shelf">Our shelf</a> &nbsp;/&nbsp; <span>${a.name}</span></p>
     <div class="page-hero__grid">
       <div>
         <span class="kicker kicker--orange">${a.role}</span>
@@ -1327,8 +1329,8 @@ const authorPage = (a) => {
              a solid orange CTA that sends visitors to a retailer would make
              leaving the page the most prominent action on it. */''}
         <div class="btn-row" style="margin-top:28px">
-          <a class="btn btn--solid" href="contact.html?service=${encodeURIComponent('Book Publishing')}">Publish with us ${icon('arrow')}</a>
-          <a class="btn" href="index.html#shelf">See the shelf</a>
+          <a class="btn btn--solid" href="/contact?service=${encodeURIComponent('Book Publishing')}">Publish with us ${icon('arrow')}</a>
+          <a class="btn" href="/#shelf">See the shelf</a>
         </div>
       </div>
       ${(() => {
@@ -1366,7 +1368,7 @@ ${/* Testimonial rides alongside the story as a sticky left column rather
           <span class="quote-card__by">${a.testimonial.attrib}</span>
         </figcaption>
       </figure>
-      <a class="btn btn--solid quote-card__cta" href="contact.html">Start your book ${icon('arrow')}</a>
+      <a class="btn btn--solid quote-card__cta" href="/contact">Start your book ${icon('arrow')}</a>
     </aside>
     <div class="prose">
       <h2>${a.storyHeading}</h2>
@@ -1388,7 +1390,7 @@ ${ctaBand('Your book, made <em>properly</em>', 'Tell us where the manuscript is 
   return layout({
     title: `${a.name} — ${a.book.title} — ${site.name}`,
     desc: attr(a.lede),
-    current: `author-${a.slug}.html`,
+    current: `/author-${a.slug}`,
     body
   });
 };
@@ -1437,9 +1439,16 @@ const logoPlaceholder = (onDark) => {
 /* ==========================================================================
    WRITE EVERYTHING
    ========================================================================== */
+/* Every page but the home page is written as <slug>/index.html. That is what
+   drops the extension from the URL on any static host — no rewrite rules to
+   configure, and nothing that breaks if the host changes. */
 const write = (file, contents) => {
-  fs.writeFileSync(path.join(ROOT, file), contents, 'utf8');
-  console.log('  ✓ ' + file);
+  const slug = file.replace(/.html$/, '');
+  const out = file === 'index.html' ? file : path.join(slug, 'index.html');
+  const full = path.join(ROOT, out);
+  fs.mkdirSync(path.dirname(full), { recursive: true });
+  fs.writeFileSync(full, contents, 'utf8');
+  console.log('  ✓ ' + (file === 'index.html' ? '/' : '/' + slug));
 };
 
 /* Used for the logo placeholders: restores them if they go missing, but never

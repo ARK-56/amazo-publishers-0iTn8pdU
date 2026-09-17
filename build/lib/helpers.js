@@ -51,26 +51,16 @@ const attr = (s) => plain(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;');
 
 /* ---------- service lookups ---------- */
 const bySlug = Object.fromEntries(services.map((s) => [s.slug, s]));
-const href = (s) => `${s.slug}.html`;
+/* Pages are written as <slug>/index.html, so a URL carries no extension and
+   is root-relative — the same string works from any page, at any depth. The
+   site is served from the domain root; a sub-path deployment would need these
+   made relative instead. */
+const pageHref = (slug) => (slug === 'index' ? '/' : `/${slug}`);
+const href = (s) => pageHref(s.slug);
 
-// Which services get a slot in the top bar, and the shorter labels they use
-// there so the bar fits without wrapping. Full titles are used everywhere else.
-const NAV_PRIMARY = [
-  'ghostwriting',
-  'book-editing-proofreading',
-  'amazon-book-publishing',
-  'book-marketing',
-  'book-cover-design'
-];
-const NAV_SHORT = {
-  'ghostwriting': 'Ghostwriting',
-  'book-editing-proofreading': 'Editing',
-  'amazon-book-publishing': 'Amazon Publishing',
-  'book-marketing': 'Marketing',
-  'book-cover-design': 'Cover Design'
-};
-const navPrimary = NAV_PRIMARY.map((s) => bySlug[s]);
-const navOther = services.filter((s) => !NAV_PRIMARY.includes(s.slug));
+/* Assets are addressed from the root for the same reason. */
+const asset = (p) => (p ? '/' + String(p).replace(/^\/+/, '') : p);
+
 
 const gridServices = services.filter((s) => s.primary);
 const extraServices = ['audio-book', 'website-content-writing', 'book-video-trailer', 'author-website']
@@ -94,10 +84,69 @@ const wordmark = (cls, variant) => {
     : ' fetchpriority="high" decoding="async"';
 
   return `
-<a class="wordmark${cls ? ` ${cls}` : ''}" href="index.html" aria-label="${site.name} — home">
-  <img class="wordmark__img" src="${src}" alt="${attr(l.alt || site.name)}" width="${w}" height="${h}"${lazy}>
+<a class="wordmark${cls ? ` ${cls}` : ''}" href="/" aria-label="${site.name} — home">
+  <img class="wordmark__img" src="${asset(src)}" alt="${attr(l.alt || site.name)}" width="${w}" height="${h}"${lazy}>
 </a>`;
 };
+
+/* ---------- mega menu ---------- */
+/* The header collapses every service behind one "Services" item, with these
+   three categories down the left of the panel. Hand-ordered rather than
+   derived, so a newly added service can silently miss the menu — the check
+   below fails the build instead, the same way the footer does. */
+const SERVICE_GROUPS = [
+  {
+    label: 'Writing Services',
+    icon: 'pen',
+    slugs: [
+      'ghostwriting',
+      'childrens-books',
+      'comics-graphic-novels',
+      'romance-love-stories',
+      'website-content-writing',
+      'blog-article-writing'
+    ]
+  },
+  {
+    label: 'Editing & Publishing',
+    icon: 'edit',
+    slugs: [
+      'book-editing-proofreading',
+      'book-publishing',
+      'book-formatting',
+      'amazon-book-publishing',
+      'hassle-free-publishing',
+      'audio-book'
+    ]
+  },
+  {
+    label: 'Design, Printing & Marketing',
+    icon: 'palette',
+    slugs: [
+      'book-cover-design',
+      'book-marketing',
+      'book-promotion',
+      'book-video-trailer',
+      'author-website'
+    ]
+  }
+];
+
+{
+  const grouped = SERVICE_GROUPS.flatMap((g) => g.slugs);
+  const missing = services.filter((s) => !grouped.includes(s.slug)).map((s) => s.slug);
+  const unknown = grouped.filter((slug) => !bySlug[slug]);
+  const duplicated = grouped.filter((slug, n) => grouped.indexOf(slug) !== n);
+  if (missing.length || unknown.length || duplicated.length) {
+    throw new Error(
+      'helpers.js SERVICE_GROUPS: ' + [
+        missing.length ? 'not in any group, so unreachable from the header: ' + missing.join(', ') : '',
+        unknown.length ? 'listed but not a service: ' + unknown.join(', ') : '',
+        duplicated.length ? 'in more than one group: ' + duplicated.join(', ') : ''
+      ].filter(Boolean).join('; ')
+    );
+  }
+}
 
 module.exports = {
   icon,
@@ -106,11 +155,10 @@ module.exports = {
   attr,
   bySlug,
   href,
-  NAV_PRIMARY,
-  NAV_SHORT,
-  navPrimary,
-  navOther,
+  pageHref,
+  asset,
   gridServices,
   extraServices,
-  wordmark
+  wordmark,
+  SERVICE_GROUPS
 };
