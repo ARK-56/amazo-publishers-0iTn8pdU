@@ -2,28 +2,52 @@
    Header component — sticky top bar, used by every page via layout().
 
    header(current) → HTML string
-     current: the filename of the page being rendered (e.g. 'about.html').
+     current: the URL of the page being rendered (e.g. '/about').
               Used to mark the matching nav link with aria-current="page";
               pass nothing on pages with no nav entry of their own.
+
+   Every service sits behind one "Services" item that opens a mega panel:
+   categories down the left, that category's services on the right. The
+   categories and their contents are SERVICE_GROUPS in lib/helpers.js, which
+   fails the build if a service is missing from all of them.
    ========================================================================== */
 
 const {
-  href, attr, wordmark, navPrimary, navOther, NAV_SHORT
+  href, attr, icon, wordmark, bySlug, SERVICE_GROUPS
 } = require('../lib/helpers.js');
 
 const header = (current) => {
   const isCur = (h) => (current === h ? ' aria-current="page"' : '');
 
-  const primaryItems = navPrimary
-    .map(
-      (s) =>
-        `<li class="nav__item"><a class="nav__link" href="${href(s)}"${isCur(href(s))} title="${attr(s.title)}">${NAV_SHORT[s.slug] || s.nav}</a></li>`
-    )
-    .join('\n            ');
+  /* The panel is one tablist plus one panel per category. Only the first is
+     shown; the rest are marked hidden so that with no JS the menu still
+     offers a complete, readable set of links rather than an empty shell. */
+  const tabs = SERVICE_GROUPS.map((g, i) => `
+            <button class="mega__tab${i === 0 ? ' is-active' : ''}" type="button"
+                    role="tab" id="mega-tab-${i}" aria-controls="mega-panel-${i}"
+                    aria-selected="${i === 0 ? 'true' : 'false'}" tabindex="${i === 0 ? '0' : '-1'}">
+              <span class="mega__tab-icon">${icon(g.icon)}</span>
+              <span>${g.label}</span>
+              <span class="mega__tab-chev">${icon('arrow')}</span>
+            </button>`).join('');
 
-  const otherItems = navOther
-    .map((s) => `<li><a href="${href(s)}"${isCur(href(s))}>${s.nav}</a></li>`)
-    .join('\n                ');
+  const panels = SERVICE_GROUPS.map((g, i) => {
+    const links = g.slugs
+      .map((slug) => {
+        const s = bySlug[slug];
+        return `<li><a href="${href(s)}"${isCur(href(s))} title="${attr(s.title)}">${s.nav}</a></li>`;
+      })
+      .join('\n                ');
+
+    return `
+          <div class="mega__panel${i === 0 ? ' is-active' : ''}" role="tabpanel"
+               id="mega-panel-${i}" aria-labelledby="mega-tab-${i}"${i === 0 ? '' : ' hidden'}>
+            <p class="mega__heading">${g.label}</p>
+            <ul class="mega__links">
+                ${links}
+            </ul>
+          </div>`;
+  }).join('');
 
   return `
 <header class="site-header">
@@ -37,25 +61,30 @@ const header = (current) => {
 
     <nav class="nav" id="site-nav" aria-label="Main">
       <ul class="nav__list">
-            ${primaryItems}
-        <li class="nav__item nav__item--has-panel">
+        <li class="nav__item"><a class="nav__link" href="/"${isCur('/')}>Home</a></li>
+        <li class="nav__item"><a class="nav__link" href="/about"${isCur('/about')}>About</a></li>
+        <li class="nav__item nav__item--has-panel nav__item--mega">
           <button class="nav__link" type="button" aria-expanded="false" aria-haspopup="true">
-            Other Services
+            Services
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
           </button>
-          <ul class="nav__panel">
-                ${otherItems}
-          </ul>
+          <div class="mega nav__panel">
+            <div class="mega__inner">
+              <div class="mega__rail" role="tablist" aria-label="Service categories">${tabs}
+              </div>
+              <div class="mega__panels">${panels}
+              </div>
+            </div>
+          </div>
         </li>
-        <li class="nav__item"><a class="nav__link" href="about.html"${isCur('about.html')}>About</a></li>
-        <li class="nav__item"><a class="nav__link" href="contact.html"${isCur('contact.html')}>Contact</a></li>
+        <li class="nav__item"><a class="nav__link" href="/contact"${isCur('/contact')}>Contact</a></li>
       </ul>
       <div class="nav__mobile-cta">
-        <a class="btn btn--solid" href="contact.html">Get Started</a>
+        <a class="btn btn--solid" href="/contact">Get Started</a>
       </div>
     </nav>
 
-    <a class="btn btn--solid header-cta" href="contact.html">Get Started</a>
+    <a class="btn btn--solid header-cta" href="/contact">Get Started</a>
   </div>
   <span class="scroll-progress" aria-hidden="true"></span>
 </header>`;
