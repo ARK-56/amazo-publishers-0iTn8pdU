@@ -545,14 +545,15 @@ h1 em, h2 em, h3 em, .em{
   font-style: normal;
   color: var(--orange);
 }
-/* The price is the headline accent, so it takes the slot the em used to:
-   its own line, orange. Sizes are in em so they ride the title clamp. */
+/* The price runs on with the headline rather than dropping to its own line,
+   so it wraps as part of the sentence. inline-flex keeps "for $299 $249"
+   together as one unbreakable unit — the three parts are different sizes and
+   splitting them across a line break reads as three stray fragments. Sizes
+   are in em so they ride the title clamp. */
 .hero__title-price{
-  display: flex;
+  display: inline-flex;
   align-items: baseline;
-  flex-wrap: wrap;
   gap: 0 .2em;
-  margin-top: 6px;
   color: var(--orange);
 }
 .hero__title-from{
