@@ -528,6 +528,13 @@ h1 em, h2 em, h3 em, .em{
   align-items: center;
 }
 .hero .kicker{ color: rgba(253,253,251,.6); }
+/* Four words at .28em tracking measure 383px, wider than the 335px copy
+   column on a 375px phone, so the eyebrow wrapped to two lines. Easing the
+   tracking and a half-step of size holds it on one line. Below ~360px it
+   wraps again — better than shrinking uppercase text past legibility. */
+@media (max-width: 430px){
+  .hero .kicker{ font-size: 10px; letter-spacing: .22em; }
+}
 /* Two lines of text plus the price line at desktop. balance counts the price
    line too, so a starved column used to chop the text into three short ones —
    capping the art column is what keeps this to two. The em rule below applies

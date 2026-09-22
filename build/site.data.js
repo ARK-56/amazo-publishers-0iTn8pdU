@@ -592,7 +592,7 @@ const services = [
    -------------------------------------------------------------------------- */
 const home = {
   hero: {
-    kicker: 'Editing · Design · Publishing',
+    kicker: 'Editing · Design · Formatting · Publishing',
     title: 'Publish your book on Amazon',
 
     /* No price shown. To put one back, add a price block here and the
