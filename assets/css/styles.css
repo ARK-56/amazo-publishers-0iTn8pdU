@@ -545,7 +545,10 @@ h1 em, h2 em, h3 em, .em{
   font-style: normal;
   color: var(--orange);
 }
-/* The price runs on with the headline rather than dropping to its own line,
+/* Inactive while home.hero has no price block — kept because that block is
+   all it takes to bring the price back, and this is what renders it.
+
+   The price runs on with the headline rather than dropping to its own line,
    so it wraps as part of the sentence. inline-flex keeps "for $299 $249"
    together as one unbreakable unit — the three parts are different sizes and
    splitting them across a line break reads as three stray fragments. Sizes
@@ -569,7 +572,9 @@ h1 em, h2 em, h3 em, .em{
   text-decoration-thickness: .055em;
 }
 .hero__title-now{ font-weight: 700; }
-/* The launch-price flag. It is the thing that makes the headline figure
+/* Inactive while home.hero has no price block — it renders price.note.
+
+   The launch-price flag. It is the thing that makes the headline figure
    temporary, so it is a pill rather than a line of small print — orange on
    the dark hero, with the clock carrying the meaning if the text is skimmed.
    Deliberately not animated: a flashing promo badge next to a price reads as
@@ -610,12 +615,6 @@ h1 em, h2 em, h3 em, .em{
   padding: 0;
   display: grid;
   gap: 11px;
-}
-/* Five short items in one column run to 172px and push the CTA under the
-   fold on an 800px laptop. Two columns holds them to three rows. Below the
-   desktop breakpoint the copy column is too narrow to split. */
-@media (min-width: 941px){
-  .hero__points{ grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 20px; }
 }
 .hero__points li{
   display: flex;

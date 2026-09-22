@@ -593,25 +593,21 @@ const services = [
 const home = {
   hero: {
     kicker: 'Editing · Design · Publishing',
-
-    /* The price is part of the headline: "lead" sits small before a struck
-       "was" and the live "now". Because "was" renders struck through it reads
-       as a former price, so it has to be one. Drop the price block and the
-       headline stands on its own — but the CTA label below would then need
-       its {price} token removing too. */
     title: 'Publish your book on Amazon',
-    price: {
-      lead: 'for',
-      was: '$299',
-      now: '$249',
-      /* Shown as an alert pill under the headline rather than a line of small
-         print, since it is the thing that makes the price temporary. */
-      note: 'Limited-Time Launch Special'
-    },
+
+    /* No price shown. To put one back, add a price block here and the
+       headline picks it up again — the markup and CSS for it are still in
+       place. It renders as "lead" small, then a struck "was", then the live
+       "now", running on with the headline text; an optional "note" becomes
+       the alert pill beneath. Because "was" renders struck through it reads
+       as a former price, so it has to be one. The CTA label below can carry
+       a {price} token, which is filled from price.now.
+
+       price: { lead: 'for', was: '$299', now: '$249', note: 'Limited-Time Launch Special' }, */
 
     lede: 'Professional editing, cover design, print & eBook formatting, a polished book description, and publishing support — everything you need to turn your manuscript into a professionally presented book.',
 
-    /* These five are what the price above buys, so they and the package on
+    /* These five are what the package covers, so they and
        /amazon-book-publishing have to say the same thing. */
     points: [
       'Professional Editing',
@@ -622,10 +618,8 @@ const home = {
     ],
 
     ctas: {
-      /* {price} is replaced with price.now at build time, so the button can
-         never quote a different figure from the headline. "service" prefills
-         the enquiry form's dropdown. */
-      primary: { label: 'Get Started for {price}', service: 'Amazon Book Publishing' },
+      /* "service" prefills the enquiry form's dropdown. */
+      primary: { label: 'Get Started', service: 'Amazon Book Publishing' },
       secondary: { label: 'See What’s Included', href: '/amazon-book-publishing' }
     }
   },
