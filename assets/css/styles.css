@@ -568,10 +568,31 @@ h1 em, h2 em, h3 em, .em{
   text-decoration-thickness: .055em;
 }
 .hero__title-now{ font-weight: 700; }
-.hero__price-note{
-  margin: 0 0 20px;
-  font-size: 12.5px;
-  color: rgba(253,253,251,.55);
+/* The launch-price flag. It is the thing that makes the headline figure
+   temporary, so it is a pill rather than a line of small print — orange on
+   the dark hero, with the clock carrying the meaning if the text is skimmed.
+   Deliberately not animated: a flashing promo badge next to a price reads as
+   pressure, and it would also be the only thing moving on first paint. */
+.hero__alert{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 24px;
+  padding: 7px 15px 7px 12px;
+  border: 1px solid var(--orange-line);
+  border-radius: 999px;
+  background: rgba(242,131,10,.15);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: #FFD2A0;
+}
+.hero__alert svg{
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  color: var(--orange);
 }
 
 .hero__lede{ margin-bottom: 26px; color: rgba(253,253,251,.76); }
@@ -588,6 +609,12 @@ h1 em, h2 em, h3 em, .em{
   padding: 0;
   display: grid;
   gap: 11px;
+}
+/* Five short items in one column run to 172px and push the CTA under the
+   fold on an 800px laptop. Two columns holds them to three rows. Below the
+   desktop breakpoint the copy column is too narrow to split. */
+@media (min-width: 941px){
+  .hero__points{ grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 20px; }
 }
 .hero__points li{
   display: flex;

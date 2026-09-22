@@ -592,26 +592,42 @@ const services = [
    -------------------------------------------------------------------------- */
 const home = {
   hero: {
-    /* The price is part of the headline: "lead" + struck "was" + live "now"
-       render as the accent line beneath the title text. Since "was" shows
-       struck through it reads as a former price, so it needs to be one.
-       Delete the price block and the headline renders on its own. */
-    /* Chosen to split into two near-equal lines at the hero's measure —
-       "Publish your book with Amazo Publishers" could only break 430/546. */
-    title: 'Your book, published by Amazo Publishers',
+    kicker: 'Editing · Design · Publishing',
+
+    /* The price is part of the headline: "lead" sits small before a struck
+       "was" and the live "now". Because "was" renders struck through it reads
+       as a former price, so it has to be one. Drop the price block and the
+       headline stands on its own — but the CTA label below would then need
+       its {price} token removing too. */
+    title: 'Publish your book on Amazon',
     price: {
-      lead: 'from',
+      lead: 'for',
       was: '$299',
       now: '$249',
-      note: 'Limited-time launch price'
+      /* Shown as an alert pill under the headline rather than a line of small
+         print, since it is the thing that makes the price temporary. */
+      note: 'Limited-Time Launch Special'
     },
-    lede: 'We give writers a place to turn a manuscript, an outline, or a half-formed idea into a book that exists in the world — edited properly, designed properly, and published under your own name.',
-    pointsLabel: 'Here’s what’s in store',
+
+    lede: 'Professional editing, cover design, print & eBook formatting, a polished book description, and publishing support — everything you need to turn your manuscript into a professionally presented book.',
+
+    /* These five are what the price above buys, so they and the package on
+       /amazon-book-publishing have to say the same thing. */
     points: [
-      'Unlimited rewrites within your agreed scope',
-      'A dedicated project manager from day one',
-      'Two-day turnaround on revisions'
-    ]
+      'Professional Editing',
+      'Eye-Catching Cover Design',
+      'Print & eBook Formatting',
+      'Polished Book Description',
+      'Amazon Publishing Support'
+    ],
+
+    ctas: {
+      /* {price} is replaced with price.now at build time, so the button can
+         never quote a different figure from the headline. "service" prefills
+         the enquiry form's dropdown. */
+      primary: { label: 'Get Started for {price}', service: 'Amazon Book Publishing' },
+      secondary: { label: 'See What’s Included', href: '/amazon-book-publishing' }
+    }
   },
 
   about: {

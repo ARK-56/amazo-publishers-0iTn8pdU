@@ -795,24 +795,33 @@ const homePage = () => {
   ${bookStackArt()}
   <div class="shell hero__grid">
     <div class="hero__copy">
-      <span class="kicker">Ghostwriting · Editing · Publishing</span>
+      <span class="kicker">${home.hero.kicker}</span>
       <h1 class="hero__title">${home.hero.title}${home.hero.price ? `
         <span class="hero__title-price">
           ${home.hero.price.lead ? `<span class="hero__title-from">${home.hero.price.lead}</span>` : ''}
           <s class="hero__title-was">${home.hero.price.was}</s>
           <span class="hero__title-now">${home.hero.price.now}</span>
         </span>` : ''}</h1>
-      ${home.hero.price && home.hero.price.note
-        ? `<p class="hero__price-note">${home.hero.price.note}</p>` : ''}
+      ${home.hero.price && home.hero.price.note ? `<p class="hero__alert">
+        ${icon('clock')}<span>${home.hero.price.note}</span>
+      </p>` : ''}
       <p class="lede hero__lede">${home.hero.lede}</p>
-      <p class="hero__points-label">${home.hero.pointsLabel}</p>
+      ${home.hero.pointsLabel ? `<p class="hero__points-label">${home.hero.pointsLabel}</p>` : ''}
       <ul class="hero__points">
         ${home.hero.points.map((p) => `<li>${icon('check')}<span>${p}</span></li>`).join('\n        ')}
       </ul>
-      <div class="btn-row">
-        <a class="btn btn--solid" href="/contact">Get Started ${icon('arrow')}</a>
-        <a class="btn btn--light" href="#services">See our services</a>
-      </div>
+      ${(() => {
+        const c = home.hero.ctas;
+        /* {price} keeps the button in step with the headline figure. */
+        const fill = (s) => s.replace('{price}', home.hero.price ? home.hero.price.now : '');
+        const primaryHref = c.primary.service
+          ? `/contact?service=${encodeURIComponent(c.primary.service)}`
+          : (c.primary.href || '/contact');
+        return `<div class="btn-row">
+        <a class="btn btn--solid" href="${primaryHref}">${fill(c.primary.label)} ${icon('arrow')}</a>
+        <a class="btn btn--light" href="${c.secondary.href}">${fill(c.secondary.label)}</a>
+      </div>`;
+      })()}
     </div>
     <div class="hero__art" aria-hidden="true">
       <div class="hero__stack">
